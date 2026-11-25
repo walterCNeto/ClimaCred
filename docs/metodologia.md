@@ -4,12 +4,16 @@ Os cenários de curto prazo do NGFS (primeira safra, maio de 2025) combinam trê
 
 ΔPD = PD(cenário) − PD(linha de base), em pontos percentuais, por setor, país e ano (2024–2030).
 
+No arquivo do IIASA (`CLIMACRED_IIASA_2025_07_02.xlsx`, versão 1.1) as variáveis são `pd_adjustment|<setor>` (ΔPD, "abs. change in value with respect to BAU in percentage points") e `baseline_pd|<setor>` (PD de linha de base, "value/level in percentage points"), para 50 setores e 53 regiões. O Brasil (`Brazil - BRA`) tem série própria em quatro cenários: HWTP (Highway to Paris), SWUC (Sudden Wake-Up Call), DIRE (Diverging Realities) e DAPS_SAM (Disasters and Policy Stagnation com eventos na América do Sul). As demais versões do DAPS não trazem o Brasil.
+
+A PD de linha de base do CLIMACRED para o Brasil é a mesma em todos os setores e fica entre 35% e 45% ao longo de 2024–2030. Esse nível é muito superior a uma PD de 12 meses de carteira corporativa, o que indica uma escala própria do modelo estrutural; por isso a soma direta da ΔPD a PDs de 12 meses mistura escalas.
+
 ### Aplicação ao contrato
 
 - **Soma direta:** PD_s = PD + ΔPD (uso previsto pelos autores do CLIMACRED para a firma representativa).
 - **Deslocamento Δz:** Δz = Φ⁻¹(PD_ref + ΔPD) − Φ⁻¹(PD_ref) e PD_s = Φ(Φ⁻¹(PD) + Δz). Preserva a ordenação de risco; coincide com a soma direta quando PD = PD_ref.
 
-Piso de PD de 0,030%. A PD de referência do setor é a média da carteira ponderada por EAD ou um valor único informado.
+PD de referência do Δz (premissa a escolher): (i) `baseline_pd` do CLIMACRED, que mede o choque na escala do próprio modelo e é a opção padrão; (ii) média da carteira no setor, ponderada por EAD; (iii) valor único informado. Piso de PD de 0,030%.
 
 ### Perdas e capital
 
@@ -29,3 +33,11 @@ A ΔPD ilustrativa usa cinco âncoras publicadas e premissas para os demais seto
 - Battiston, S., Mandel, A., Monasterolo, I., Roncoroni, A. (2023). Climate credit risk and corporate valuation. CEPR DP20239.
 - Barón, A., Dassatti, C., Lavagna, G., Montañez-Enríquez, R. (2026). Assessing climate risks in Uruguay’s banks using NGFS short-term scenarios. *Latin American Journal of Central Banking*, 7, 100198.
 - BCBS. CRE31 – IRB approach: risk weight functions. Resolução CMN 4.557/2017, com redação da Resolução CMN 4.943/2021.
+
+### CreditRisk+ (capital econômico de carteira)
+
+Modelo atuarial (Credit Suisse First Boston, 1997): inadimplências Poisson com intensidade PD·(w₀ + Σ w_k X_k), fatores setoriais X_k ~ Gama com média 1. A distribuição de perdas, em múltiplos da unidade L₀ = max(LGD·EAD)/nº de bandas, sai da função geradora de probabilidades, avaliada por FFT (equivalente à recursão de Panjer).
+
+**CEA = PE + PI**, com PE = Σ PD·LGD·EAD e PI = Q_q(L) − E[L]. No estresse, as mesmas exposições com as PDs estressadas: **CEA_stress = PE_stress + PI_stress**.
+
+Calibragem parametrizável na barra lateral: nível de confiança; volatilidade relativa σ/μ da taxa de inadimplência de cada fator; peso idiossincrático w₀; estrutura de fatores (um por setor CLIMACRED ou fator único); multiplicador de σ/μ no estresse; nº de bandas.
