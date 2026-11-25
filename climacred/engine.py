@@ -30,19 +30,22 @@ def annualize(pd_, horizon: float):
     return 1 - (1 - np.clip(p, 0, PD_CAP)) ** (1.0 / horizon)
 
 
-def stress_pd(pd_base, dpd_pp, ref_pd, mode: str, floor: float = PD_FLOOR, horizon: float = 1.0):
+def stress_pd(pd_base, dpd_pp, ref_pd, mode: str, floor: float = PD_FLOOR, horizon: float = 1.0, benefits: bool = True):
     """PD estressada.
 
     mode='add': soma direta da ΔPD (p.p.), como publicada pelo NGFS.
     mode='dz' : Δz = Φ⁻¹(PD_ref + ΔPD) − Φ⁻¹(PD_ref); PD_s = Φ(Φ⁻¹(PD) + Δz).
                 Com horizon = T > 1, PD_ref e PD_ref + ΔPD são antes convertidas para 12 meses por
                 intensidade constante (annualize), e o Δz é medido na escala anual.
-    Contratos sem ΔPD (NaN) mantêm a PD de base.
+    Contratos sem ΔPD (NaN) mantêm a PD de base. Com benefits=False, ΔPD negativas (setores beneficiados pelo
+    cenário) são zeradas, de modo que o cenário só pode aumentar a PD.
     """
     pdb = np.asarray(pd_base, dtype=float)
     d = np.asarray(dpd_pp, dtype=float) / 100.0
     has = ~np.isnan(d)
     d0 = np.where(has, d, 0.0)
+    if not benefits:
+        d0 = np.maximum(d0, 0.0)
     if mode == "add":
         ps = np.clip(pdb + d0, floor, PD_CAP)
     else:
@@ -65,6 +68,7 @@ class Params:
     pd_floor: float = PD_FLOOR  # piso de PD do IRB (Basileia II: 0,03%; Basileia III: 0,05%)
     irb_scale: float = 1.0      # fator de escala sobre K (Basileia II previa 1,06)
     horizon: float = 1.0        # horizonte (anos) da baseline_pd/ΔPD do CLIMACRED; > 1 anualiza antes do Δz
+    benefits: bool = True       # considerar benefícios (ΔPD negativa); False zera ΔPD < 0
 
 
 def defaulted_mask(c: pd.DataFrame) -> np.ndarray:
@@ -166,7 +170,7 @@ def run(portfolio: pd.DataFrame, data: dict, p: Params) -> dict:
         rows = {}
         for mode in ("add", "dz"):
             for yi, y in enumerate(YEARS):
-                ps = stress_pd(pdb, D[:, yi], ref[:, yi], mode, p.pd_floor, p.horizon)
+                ps = stress_pd(pdb, D[:, yi], ref[:, yi], mode, p.pd_floor, p.horizon, p.benefits)
                 pe = expected_loss(ps, c)
                 cap = capital_k(ps, c, p)
                 r = {"cenario": sc["id"], "nome": sc["nome"], "modo": mode, "ano": y,
@@ -179,13 +183,18 @@ def run(portfolio: pd.DataFrame, data: dict, p: Params) -> dict:
         cur = [rows[(p.mode, i)] for i in range(len(YEARS))]
         yi = int(np.argmax([r["dtot"] for r in cur])) if p.year == "pico" else YEARS.index(int(p.year))
         other = "add" if p.mode == "dz" else "dz"
-        ps = stress_pd(pdb, D[:, yi], ref[:, yi], p.mode, p.pd_floor, p.horizon)
+        ps = stress_pd(pdb, D[:, yi], ref[:, yi], p.mode, p.pd_floor, p.horizon, p.benefits)
+        ps_acr = stress_pd(pdb, D[:, yi], ref[:, yi], p.mode, p.pd_floor, p.horizon, False)
         per = pd.DataFrame({
             "cenario": sc["id"], "ano": YEARS[yi], "id_contrato": c["id_contrato"], "cliente": c["cliente"],
             "setor": c["sec"], "rating": c.get("rating", ""), "estagio": c["estagio"].to_numpy(), "ead": ead, "lgd": lgd,
-            "pais": c["pais"].to_numpy(), "m": m, "delta_pd_pp": D[:, yi], "pd_ref": ref[:, yi], "pd_base": pdb, "pd_estressada": ps,
+            "pais": c["pais"].to_numpy(), "m": m, "delta_pd_pp": D[:, yi], "pd_ref": ref[:, yi], "pd_base": pdb, "pd_estressada": ps, "pd_acrescimo": ps_acr,
             "delta_pe": expected_loss(ps, c) - c["peb"].to_numpy(), "delta_capital": capital_k(ps, c, p) - c["capb"].to_numpy(),
         })
+        ev = rows[(p.mode, yi)]
+        t = per["delta_pe"] + per["delta_capital"]
+        ev.update({"acr": float(t[t > 0].sum()), "ben": float(t[t < 0].sum()),
+                   "n_ben": int((t < 0).sum()), "ead_ben": float(per.loc[t < 0, "ead"].sum())})
         results.append({"sc": sc, "yi": yi, "ref_used": ref_used, "ref_mean": float(np.average(ref[:, yi], weights=ead)), "ev": rows[(p.mode, yi)], "other": rows[(other, yi)], "per": per})
     return {"params": p, "base": base, "portfolio": c, "results": results, "yearly": pd.DataFrame(yearly),
             "skipped": skipped}

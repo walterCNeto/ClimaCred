@@ -62,14 +62,15 @@ def scenario_table(out: dict) -> pd.DataFrame:
     b, pr = out["base"], out["params"].pr
     nan = float("nan")
     rows = [{"Cenário": "Base", "Ano": "–", "PD média": b["pdw"], "Perda esperada": b["pe"], "Δ PE": nan,
-             "Capital ASRF": b["cap"], "Δ capital": nan, "Δ PE líquida de provisão": nan, "Δ total": nan, "Δ total % PR": nan,
+             "Capital ASRF": b["cap"], "Δ capital": nan, "Δ PE líquida de provisão": nan, "Acréscimo": nan, "Benefício": nan, "Impacto líquido": nan, "Impacto líquido % PR": nan,
              "EAD com ΔPD": nan}]
     for r in out["results"]:
         e = r["ev"]
         rows.append({"Cenário": r["sc"]["nome"], "Ano": str(YEARS[r["yi"]]), "PD média": e["pd_media"],
                      "Perda esperada": e["pe"], "Δ PE": e["dpe"], "Capital ASRF": e["cap"], "Δ capital": e["dcap"],
-                     "Δ PE líquida de provisão": e["exc"] - b["exc"], "Δ total": e["dtot"],
-                     "Δ total % PR": e["dtot"] / pr if has_pr(pr) else nan,
+                     "Δ PE líquida de provisão": e["exc"] - b["exc"], "Acréscimo": e.get("acr", e["dtot"]),
+                     "Benefício": e.get("ben", 0.0), "Impacto líquido": e["dtot"],
+                     "Impacto líquido % PR": e["dtot"] / pr if has_pr(pr) else nan,
                      "EAD com ΔPD": e["cobertura"]})
     return pd.DataFrame(rows)
 
@@ -102,9 +103,13 @@ def model_delta(out: dict, r: dict, model: str | None = None) -> dict:
     model = model or cap_model(out)
     if model == "crp":
         x, b = out["crp"]["cen"][r["sc"]["id"]], out["crp"]["base"]
-        return {"dpe": x["pe"] - b["pe"], "dpi": x["pi"] - b["pi"], "dtot": x["cea"] - b["cea"], "tot": x["cea"], "pi": x["pi"]}
+        acr = x.get("cea_acr", x["cea"]) - b["cea"]
+        dt = x["cea"] - b["cea"]
+        return {"dpe": x["pe"] - b["pe"], "dpi": x["pi"] - b["pi"], "dtot": dt, "tot": x["cea"], "pi": x["pi"],
+                "acr": acr, "ben": dt - acr}
     e, b = r["ev"], out["base"]
-    return {"dpe": e["dpe"], "dpi": e["dcap"], "dtot": e["dtot"], "tot": e["pe"] + e["cap"], "pi": e["cap"]}
+    return {"dpe": e["dpe"], "dpi": e["dcap"], "dtot": e["dtot"], "tot": e["pe"] + e["cap"], "pi": e["cap"],
+            "acr": e.get("acr", e["dtot"]), "ben": e.get("ben", 0.0)}
 
 
 def model_base(out: dict, model: str | None = None) -> dict:
@@ -135,9 +140,9 @@ def capital_compare(out: dict) -> pd.DataFrame:
         c = model_delta(out, r, "crp") if has_crp else None
         d = row(r["sc"]["nome"], str(YEARS[r["yi"]]), {"pe": r["ev"]["pe"], "pi": a["pi"], "tot": a["tot"]},
                 {"pi": c["pi"], "tot": c["tot"]} if has_crp else None)
-        d["Δ CEA ASRF"] = a["dtot"]
+        d["Acréscimo ASRF"], d["Benefício ASRF"], d["Δ CEA ASRF"] = a["acr"], a["ben"], a["dtot"]
         if has_crp:
-            d["Δ CEA CreditRisk+"] = c["dtot"]
+            d["Acréscimo CreditRisk+"], d["Benefício CreditRisk+"], d["Δ CEA CreditRisk+"] = c["acr"], c["ben"], c["dtot"]
         rows.append(d)
     return pd.DataFrame(rows)
 

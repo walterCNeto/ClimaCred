@@ -452,7 +452,11 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         "As duas formas coincidem quando a PD do contrato é igual à PD de referência. A soma direta atribui o mesmo acréscimo absoluto a "
         "um contrato de rating A e a um de rating B, enquanto o deslocamento preserva a ordenação e gera multiplicadores maiores para PDs "
         "baixas. A PD de referência condiciona o resultado, já que a PD baseline do CLIMACRED mede o choque na escala do próprio modelo e "
-        "a média da carteira o mede na escala das PDs de doze meses. Neste relatório, a aplicação adotada foi o " + metodo + ".",
+        "a média da carteira o mede na escala das PDs de doze meses. Neste relatório, a aplicação adotada foi o " + metodo + ". "
+        "Alguns setores têm ΔPD negativa no cenário, como renováveis e parte da indústria numa transição ordenada, e a redução de PD "
+        "correspondente é tratada como benefício"
+        + (", mantido no cálculo e reportado separadamente do acréscimo." if getattr(p, "benefits", True) else
+           ", aqui desconsiderado (ΔPD negativas zeradas), o que torna o exercício mais conservador."),
         st["body0"]))
     A(Paragraph(
         "A <i>baseline_pd</i> do CLIMACRED não é uma PD de doze meses. Para trazer o choque ao horizonte anual, supõe-se carteira "
@@ -529,17 +533,32 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     A(Paragraph("5. Resultados", st["h1"]))
     A(Paragraph(
         f"A Tabela 2 consolida o resultado por cenário. O cenário mais severo é {W['sc']['nome']}, em {YEARS[W['yi']]}, com PD média "
-        f"ponderada de {pc(W['ev']['pd_media'])} e impacto total de {impact(W['ev']['dtot'], pr)}. A Figura 2 decompõe esse impacto "
+        f"ponderada de {pc(W['ev']['pd_media'])} e impacto líquido de {impact(W['ev']['dtot'], pr)}. A Figura 2 decompõe esse impacto "
         "entre perda esperada e capital ASRF, e a Figura 3 mostra a trajetória anual da perda esperada incremental, em que os cenários de "
         "transição acumulam efeito ao longo do tempo, enquanto os cenários físicos produzem picos concentrados nos anos dos eventos.",
         st["body"]))
     g = _mb
-    rows = [["Base", "–", pc(B["pdw"]), g(B["pe"]), "–", g(B["cap"]), "–", "–"]]
-    rows += [[r["sc"]["nome"], str(YEARS[r["yi"]]), pc(r["ev"]["pd_media"]), g(r["ev"]["pe"]), g(r["ev"]["dpe"]), g(r["ev"]["cap"]),
-              g(r["ev"]["dcap"]), impact(r["ev"]["dtot"], pr).replace(" do PR", "")] for r in R]
-    A(KeepTogether([_caption(st, "<b>Tabela 2.</b> Perda esperada e capital ASRF/IRB (K·EAD) por cenário (R$; mi = milhões, bi = bilhões), no ano de avaliação."),
-                    _table(rows, ["Cenário", "Ano", "PD média", "PE", "Δ PE", "K·EAD", "Δ K·EAD", "Δ total % PR" if has_pr(pr) else "Δ total"],
-                           [4.4, 1.0, 1.6, 1.6, 1.6, 1.8, 1.7, 2.0], st, align_right_from=1)]))
+    rows = [["Base", "–", pc(B["pdw"]), "–", "–", "–", "–", "–"]]
+    rows += [[r["sc"]["nome"], str(YEARS[r["yi"]]), pc(r["ev"]["pd_media"]), g(r["ev"]["dpe"]), g(r["ev"]["dcap"]),
+              g(r["ev"].get("acr", r["ev"]["dtot"])), g(r["ev"].get("ben", 0.0)) if r["ev"].get("ben", 0.0) < -1e-9 else "–",
+              impact(r["ev"]["dtot"], pr).replace(" do PR", "")] for r in R]
+    A(KeepTogether([_caption(st, "<b>Tabela 2.</b> Variação da perda esperada e do capital ASRF/IRB (K·EAD) por cenário, com o impacto "
+                                 "líquido decomposto em acréscimo e benefício (R$; mi = milhões, bi = bilhões), no ano de avaliação."),
+                    _table(rows, ["Cenário", "Ano", "PD média", "Δ PE", "Δ K·EAD", "Acréscimo", "Benefício",
+                                  "Impacto líquido % PR" if has_pr(pr) else "Impacto líquido"],
+                           [4.4, 1.0, 1.6, 1.6, 1.7, 1.8, 1.7, 2.0], st, align_right_from=1)]))
+    _bn = [r for r in R if r["ev"].get("ben", 0.0) < -1e-9]
+    if _bn:
+        A(Paragraph(
+            "O impacto líquido soma o acréscimo dos contratos cuja PD sobe e o benefício dos contratos de setores favorecidos pelo "
+            "cenário, cuja ΔPD é negativa. "
+            + " ".join(f"Em {r['sc']['nome']}, {r['ev']['n_ben']} contratos ({money(r['ev']['ead_ben'])} de EAD) têm benefício de "
+                       f"{money(-r['ev']['ben'])}, de modo que o acréscimo de {money(r['ev']['acr'])} resulta em impacto líquido de "
+                       f"{money(r['ev']['dtot'])}." for r in _bn)
+            + " Desconsiderar os benefícios, leitura mais conservadora, eleva o impacto ao valor do acréscimo.", st["body"]))
+    elif not getattr(p, "benefits", True):
+        A(Paragraph("Neste relatório os benefícios setoriais foram desconsiderados, com as ΔPD negativas zeradas, de modo que o "
+                    "impacto líquido coincide com o acréscimo.", st["body"]))
     A(KeepTogether([_fig_to_image(_fig_bars(out), 14.5),
                     _caption(st, f"<b>Figura 2.</b> Impacto incremental {'em % do Patrimônio de Referência' if has_pr(pr) else 'em R$'}, com a perda esperada em cinza e "
                                  "o capital ASRF/IRB (K·EAD) hachurado.")]))

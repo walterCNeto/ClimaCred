@@ -151,3 +151,20 @@ def test_stage3_not_shocked_and_consistent():
         assert (per.loc[dm, "delta_pe"].abs().max(), per.loc[dm, "delta_capital"].abs().max()) == (0, 0)
     crp = run_crplus(out, CRParams())
     assert crp["perda_def"] == pytest.approx(tot)
+
+
+def test_benefits_decomposition_and_toggle():
+    from climacred.creditrisk import CRParams, run_crplus
+    from climacred.report import model_delta
+    cart, _ = load_portfolio()
+    data = load_dpd()
+    on = run(cart, data, Params(year=2030))
+    off = run(cart, data, Params(year=2030, benefits=False))
+    on["crp"], off["crp"] = run_crplus(on, CRParams()), run_crplus(off, CRParams())
+    for a, b in zip(on["results"], off["results"]):
+        for m in ("asrf", "crp"):
+            da, db = model_delta(on, a, m), model_delta(off, b, m)
+            assert da["acr"] + da["ben"] == pytest.approx(da["dtot"])
+            assert da["ben"] <= 1e-9 and db["ben"] == pytest.approx(0, abs=1e-6)
+            assert db["dtot"] == pytest.approx(da["acr"], rel=1e-6, abs=1e-6)
+        assert (b["per"]["pd_estressada"] >= b["per"]["pd_base"] - 1e-12).all()

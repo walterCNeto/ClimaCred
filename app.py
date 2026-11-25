@@ -63,6 +63,10 @@ with st.sidebar:
                           "constante, PD₁ = 1 − (1 − PD_T)^(1/T), antes de medir o Δz. Premissa: o horizonte T da baseline_pd "
                           "do CLIMACRED, que deve ser documentado."):
             horizon = st.number_input("Horizonte T da baseline_pd do CLIMACRED (anos)", 1.0, 30.0, 5.0, 0.5, format="%.1f")
+    benefits = st.toggle("Considerar benefícios (ΔPD negativa)", value=True,
+                         help="Alguns setores têm ΔPD negativa no cenário (por exemplo, renováveis e siderurgia no Highway to "
+                              "Paris), o que reduz a PD e o capital. Desligado, essas ΔPD são zeradas e o cenário só pode "
+                              "aumentar o risco, leitura mais conservadora para o teste de estresse.")
     year = st.selectbox("Ano de avaliação", ["pico"] + YEARS, format_func=lambda y: "Pico de cada cenário" if y == "pico" else str(y))
     if up_cart is not None and st.session_state.get("pr_from_example"):
         st.session_state["pr_input"], st.session_state["pr_from_example"] = None, False
@@ -143,7 +147,7 @@ def _sig(f):
 
 
 run_key = (cart_mode, _sig(up_cart), _sig(up_dpd), local.name if local else None, mode, ref, round(ref_fix, 6), year, pr_in, fb,
-           cr_conf, cr_vol, cr_w0, cr_sec, cr_svol, cr_bands, cap_mdl, irb_floor, irb_scale, horizon)
+           cr_conf, cr_vol, cr_w0, cr_sec, cr_svol, cr_bands, cap_mdl, irb_floor, irb_scale, horizon, benefits)
 with st.sidebar:
     st.divider()
     clicked = st.button("▶ Executar", type="primary", width="stretch", disabled=cart is None) \
@@ -156,7 +160,7 @@ with st.sidebar:
 if clicked and cart is not None:
     with st.spinner("Calculando perdas e capital em todos os cenários…"):
         _o = run(cart, data, Params(mode=mode, year=year, ref=ref, ref_fix=ref_fix, pr=pr, fallback_country=fb,
-                                    pd_floor=irb_floor, irb_scale=irb_scale, horizon=horizon))
+                                    pd_floor=irb_floor, irb_scale=irb_scale, horizon=horizon, benefits=benefits))
         _o["crp"] = run_crplus(_o, CRParams(conf=cr_conf, vol_ratio=cr_vol, w0=cr_w0, sectors=cr_sec, stress_vol=cr_svol,
                                             bands_max=int(cr_bands)))
         _o["cap_model"] = cap_mdl
@@ -212,6 +216,14 @@ DW, MB = model_delta(out, W), model_base(out)
 st.title(f"{W['sc']['nome']}: impacto de {impact(DW['dtot'], pr)} em {YEARS[W['yi']]}")
 st.write(f"Capital de referência: **{MLAB}**. No pior cenário, a perda esperada da carteira PJ sobe {money(DW['dpe'])} e a "
          f"perda inesperada {money(DW['dpi'])}, com PD média ponderada de {pc(B['pdw'])} para {pc(W['ev']['pd_media'])}.")
+_bens = [(r, model_delta(out, r)) for r in R if model_delta(out, r)["ben"] < -1e-9]
+if _bens:
+    st.info("Impacto líquido de benefícios setoriais: "
+            + "; ".join(f"{r['sc']['nome']}, acréscimo de {money(d['acr'])} e benefício de {money(-d['ben'])} "
+                        f"({r['ev']['n_ben']} contratos com ΔPD negativa)" for r, d in _bens)
+            + ". O seletor na barra lateral permite desconsiderar os benefícios.")
+elif not benefits:
+    st.caption("Benefícios desconsiderados: ΔPD negativas zeradas; o impacto corresponde ao acréscimo.")
 if dpd_src == "ill":
     st.warning("ΔPD ilustrativa: carregue o arquivo CLIMACRED do NGFS Scenario Explorer (IIASA) ou salve-o em data/ngfs/.")
 ru = {r["ref_used"] for r in R}
@@ -235,7 +247,10 @@ with c1:
                             marker_color=RED),
                      go.Bar(y=names, x=[model_delta(out, r)["dpi"] / dv for r in R], name=f"Δ perda inesperada ({MLAB})",
                             orientation="h", marker_color=SLATE)])
-    fig.update_layout(barmode="stack", title=f"Δ CEA por cenário – {MLAB} ({xt})", xaxis_title=xt, height=380,
+    if _bens:
+        fig.add_trace(go.Scatter(y=names, x=[model_delta(out, r)["acr"] / dv for r in R], name="Acréscimo (sem benefícios)",
+                                 mode="markers", marker=dict(symbol="line-ns-open", size=16, color="black", line=dict(width=2))))
+    fig.update_layout(barmode="relative", title=f"Δ CEA por cenário – {MLAB} ({xt})", xaxis_title=xt, height=380,
                       yaxis=dict(autorange="reversed"), margin=dict(l=10, r=10, t=50, b=10), legend=dict(orientation="h", y=-0.2),
                       separators=",.")
     st.plotly_chart(fig, width="stretch")
@@ -252,7 +267,7 @@ with c2:
 
 # ---------------- abas ----------------
 tabs = st.tabs(["Cenários", "CreditRisk+", "Setores", "Contratos", "Aditivo × Δz", "Base de entrada", "Tabela ΔPD", "Metodologia", "Relatório"])
-fmt_cols = {"PD média": pc, "Δ total % PR": pc, "EAD com ΔPD": pc}
+fmt_cols = {"PD média": pc, "Impacto líquido % PR": pc, "EAD com ΔPD": pc}
 
 with tabs[0]:
     st.subheader("Capital econômico: ASRF (IRB) × CreditRisk+")
@@ -265,7 +280,7 @@ with tabs[0]:
     st.subheader("Perdas e capital ASRF por cenário")
     t = scenario_table(out)
     if not has_pr(pr):
-        t = t.drop(columns=["Δ total % PR"])
+        t = t.drop(columns=["Impacto líquido % PR"])
     st.dataframe(t.style.format({c: fmt_cols.get(c, f3) for c in t.columns if c not in ("Cenário", "Ano")}, na_rep="–"),
                  hide_index=True, width="stretch")
     st.caption(f"Ano de avaliação: {'pico de cada cenário (maior soma de Δ PE e Δ capital)' if year == 'pico' else year}. "

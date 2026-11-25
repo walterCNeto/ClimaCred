@@ -115,7 +115,13 @@ def run_crplus(out: dict, cp: CRParams) -> dict:
     res = {"params": cp, "L0": L0, "base": base, "cen": {}, "perda_def": D, "n_def": int((~ok).sum())}
     for r in out["results"]:
         ps = r["per"]["pd_estressada"].to_numpy(float)[ok]
-        res["cen"][r["sc"]["id"]] = _add_fixed(crplus(ps, E[ok], sec, cp, L0, vol_mult=cp.stress_vol), D, L0)
+        x = _add_fixed(crplus(ps, E[ok], sec, cp, L0, vol_mult=cp.stress_vol), D, L0)
+        pa = r["per"]["pd_acrescimo"].to_numpy(float)[ok] if "pd_acrescimo" in r["per"] else ps
+        if np.allclose(pa, ps):
+            x["cea_acr"] = x["cea"]
+        else:  # acréscimo: mesmo cenário com ΔPD negativas zeradas; benefício = líquido − acréscimo
+            x["cea_acr"] = _add_fixed(crplus(pa, E[ok], sec, cp, L0, vol_mult=cp.stress_vol), D, L0)["cea"]
+        res["cen"][r["sc"]["id"]] = x
     return res
 
 
