@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estresse climático CLIMACRED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: relatório de estresse para comitê de risco, sóbrio e denso
+   IDEA a página de um relatório de estabilidade financeira: achado como título, figuras com variação, gráfico principal
+   PICTURE impacto por cenário em % do PR (barras empilhadas PE + capital) ao lado da trajetória anual 2025–2030
+   COLOUR branco, tinta #121212, vermelho #e3120b para risco físico, ardósia #2e6f8e para transição, painéis #e3ecf0; noite #10191e
+   TYPE Source Serif 4 nos títulos + Inter no texto e nos números
+   LAYOUT laptop: título e achado no topo, figuras numa fileira, gráfico de barras e trajetória lado a lado, controles numa faixa; celular: tudo empilhado */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#10191e);--ink:light-dark(#121212,#e9eef1);--mute:light-dark(#5a6670,#9fb0bb);--panel:light-dark(#e3ecf0,#18252c);--rule:light-dark(#c9d5db,#2b3b44);--red:light-dark(#e3120b,#ff5a4e);--slate:light-dark(#2e6f8e,#6fb3d4);--grey:light-dark(#8a979f,#7d8d96);--card:light-dark(#ffffff,#132027)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;letter-spacing:-.02em;line-height:1.1;margin:0}
+h1{font-size:clamp(30px,4.2vw,46px);text-wrap:balance;max-width:30ch}
+h2{font-size:clamp(22px,2.6vw,28px);margin-bottom:10px}
+h3{font-size:18px;margin:18px 0 6px}
+.band{padding:clamp(22px,3.4vw,48px) max(4vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.tab{display:inline-block;background:var(--red);color:#fff;font-weight:600;font-size:13px;padding:3px 10px;margin-bottom:14px}
+.lede{font-size:18px;max-width:70ch;margin:12px 0 0;color:var(--ink)}
+.note{font-size:13px;color:var(--mute)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5em,1fr));gap:0;border-top:2px solid var(--ink);margin-top:22px}
+.kpi{padding:12px 14px 12px 0;border-bottom:1px solid var(--rule)}
+.kpi b{display:block;font-size:clamp(22px,2.4vw,28px);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--mute)}
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(18px,3vw,40px);margin-top:26px}
+@media(max-width:860px){.duo{grid-template-columns:minmax(0,1fr)}}
+.bars .row{display:grid;grid-template-columns:minmax(9em,14em) minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule)}
+.bars .lab{font-size:14px;line-height:1.25}
+.bars .lab small{display:block;color:var(--mute);font-size:13px}
+.track{display:flex;height:22px;background:var(--panel)}
+.seg{height:100%}
+.bars .val{font-size:14px;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--mute);margin-top:8px}
+.sw{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+.fig{position:relative;min-height:320px}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+svg text{font:13px Inter,system-ui,sans-serif;fill:var(--ink);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+.controls{background:var(--panel)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14em,1fr));gap:14px 22px}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+select,input[type=number],input[type=file]{font:16px Inter,system-ui,sans-serif;width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--rule);background:var(--card);color:var(--ink)}
+input[type=file]{padding:9px 6px;font-size:14px}
+button{font:600 15px Inter,system-ui,sans-serif;min-height:44px;padding:8px 14px;border:1px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button:hover{background:var(--ink);color:var(--bg)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+nav.scroll{display:flex;gap:18px;overflow-x:auto;border-bottom:1px solid var(--rule);padding:10px max(4vw,16px);font-size:14px;white-space:nowrap;position:sticky;top:0;background:var(--bg);z-index:2}
+nav a{color:var(--ink);text-decoration:none;font-weight:500;flex:none}
+nav a:hover{color:var(--red)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th{text-align:left;font-weight:600;border-bottom:2px solid var(--ink);padding:6px 8px;vertical-align:bottom;font-size:13px}
+td{border-bottom:1px solid var(--rule);padding:6px 8px;vertical-align:top}
+td.n,th.n{text-align:right;white-space:nowrap}
+tr.tot td{font-weight:600;border-top:2px solid var(--ink)}
+.heat td.n{min-width:6.5em}
+.heat td:first-child{min-width:11em}
+.msg{font-size:14px;padding:10px 12px;border-left:3px solid var(--slate);background:var(--panel);margin-top:10px}
+.msg.err{border-color:var(--red)}
+details{margin-top:12px}
+summary{cursor:pointer;font-weight:600}
+pre{background:var(--panel);padding:12px;font-size:13px;overflow-x:auto;white-space:pre}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+@media(max-width:860px){.cols{grid-template-columns:minmax(0,1fr)}}
+.anc{color:var(--red);font-weight:600}
+@media(max-width:600px){table{font-size:13px}th,td{padding:5px 4px}.bars .row{grid-template-columns:minmax(0,1fr) auto}.bars .track{grid-column:1/-1;order:3}}
+@media(prefers-reduced-motion:no-preference){.seg{transition:width .4s ease}}
+</style>
+</head>
+<body>
+<header class="band"><div class="wrap">
+  <span class="tab">Teste de estresse climático · carteira PJ</span>
+  <h1 id="headline">Impacto dos cenários NGFS de curto prazo em perdas e capital</h1>
+  <p class="lede" id="lede">Calculando…</p>
+  <div class="kpis" id="kpis"></div>
+  <div class="duo">
+    <section aria-labelledby="t-bars">
+      <h3 id="t-bars">Impacto incremental no ano de avaliação, em % do PR</h3>
+      <div class="bars" id="bars"></div>
+      <div class="legend"><span><i class="sw" style="background:var(--red)"></i>Perda esperada</span><span><i class="sw" style="background:var(--slate)"></i>Capital econômico (ASRF)</span></div>
+    </section>
+    <section aria-labelledby="t-traj">
+      <h3 id="t-traj">Perda esperada incremental por ano (R$ mi)</h3>
+      <div class="fig" id="trajbox"><svg id="traj" role="img" aria-label="Trajetória anual da perda esperada incremental por cenário"></svg></div>
+    </section>
+  </div>
+</div></header>
+
+<section class="band controls" aria-label="Parâmetros"><div class="wrap">
+  <div class="cgrid">
+    <div><label for="f-cart">Carteira de entrada (CSV)</label><input type="file" id="f-cart" accept=".csv,.txt"><div class="note" id="cart-src">Usando carteira de exemplo (fictícia).</div></div>
+    <div><label for="f-dpd">ΔPD por setor (CSV do IIASA ou formato longo)</label><input type="file" id="f-dpd" accept=".csv,.txt"><div class="note" id="dpd-src">Usando ΔPD ilustrativa.</div></div>
+    <div><label for="p-mode">Aplicação da ΔPD ao contrato</label><select id="p-mode"><option value="dz">Deslocamento Δz (preserva ordenação)</option><option value="add">Soma direta em p.p. (como no NGFS)</option></select></div>
+    <div><label for="p-year">Ano de avaliação</label><select id="p-year"><option value="pico">Pico de cada cenário</option></select></div>
+    <div><label for="p-ref">PD de referência do setor (para Δz)</label><select id="p-ref"><option value="cart">Média da carteira por setor (ponderada por EAD)</option><option value="fix">Valor único informado</option></select></div>
+    <div><label for="p-reffix">PD de referência única (%)</label><input type="number" id="p-reffix" value="2.62" step="0.01" min="0.03" max="50"></div>
+    <div><label for="p-pr">Patrimônio de Referência (R$ mi)</label><input type="number" id="p-pr" value="1800" step="10" min="1"></div>
+    <div><label for="p-pais">País da ΔPD quando o contrato não tiver série</label><select id="p-pais"></select></div>
+  </div>
+  <div class="btns">
+    <button id="b-ex" type="button">Voltar à carteira de exemplo</button>
+    <button id="b-dpd0" type="button">Voltar à ΔPD ilustrativa</button>
+    <button id="b-tpl" type="button">Copiar modelo de carteira (CSV)</button>
+    <button id="b-res" type="button">Copiar resultados (CSV)</button>
+    <button id="b-rep" type="button">Copiar relatório (texto)</button>
+  </div>
+  <div id="flash" class="note" role="status" aria-live="polite"></div>
+</div></section>
+
+<nav class="scroll" aria-label="Seções"><a href="#cenarios">Cenários</a><a href="#setores">Setores</a><a href="#contratos">Contratos</a><a href="#modo">Aditivo × Δz</a><a href="#entrada">Base de entrada</a><a href="#dpd">Tabela ΔPD</a><a href="#metodo">Metodologia</a><a href="#relatorio">Relatório</a></nav>
+
+<section class="band" id="cenarios"><div class="wrap">
+  <h2>Resultado por cenário</h2>
+  <p class="note" id="cen-note"></p>
+  <div class="scroll"><table id="t-cen"></table></div>
+</div></section>
+
+<section class="band" id="setores" style="background:var(--panel)"><div class="wrap">
+  <h2 id="h-set">Onde a perda se concentra</h2>
+  <p class="note">Perda esperada incremental por setor GEM-E3 e cenário, no ano de avaliação (R$ mi). Intensidade da cor proporcional ao valor.</p>
+  <div class="scroll"><table class="heat" id="t-heat"></table></div>
+</div></section>
+
+<section class="band" id="contratos"><div class="wrap">
+  <h2 id="h-top">Contratos mais afetados</h2>
+  <div class="scroll"><table id="t-top"></table></div>
+</div></section>
+
+<section class="band" id="modo" style="background:var(--panel)"><div class="wrap">
+  <h2>Soma direta ou deslocamento Δz</h2>
+  <p class="note">O CLIMACRED entrega a ΔPD da firma representativa do setor. Somá-la a todo contrato trata igual um rating A e um rating B; o Δz preserva a ordenação. As duas coincidem quando a PD do contrato é igual à PD de referência do setor.</p>
+  <div class="scroll"><table id="t-cmp"></table></div>
+</div></section>
+
+<section class="band" id="entrada"><div class="wrap">
+  <h2>Base de entrada</h2>
+  <div class="cols">
+    <div>
+      <h3>Layout esperado</h3>
+      <div class="scroll"><table id="t-lay"></table></div>
+      <p class="note">Separador vírgula ou ponto e vírgula; decimal com ponto ou vírgula. Taxas em decimal (0,012 = 1,200%). CNAE na divisão de dois dígitos; a coluna setor_ngfs, se preenchida, prevalece sobre o de-para.</p>
+    </div>
+    <div>
+      <h3>Resumo da carteira carregada</h3>
+      <div id="cart-sum"></div>
+      <h3>De-para CNAE → setor GEM-E3</h3>
+      <div class="scroll"><table id="t-map"></table></div>
+    </div>
+  </div>
+  <details><summary>Primeiras 15 linhas da carteira</summary><div class="scroll"><table id="t-prev"></table></div></details>
+</div></section>
+
+<section class="band" id="dpd" style="background:var(--panel)"><div class="wrap">
+  <h2>Tabela de ΔPD em uso (p.p. sobre a linha de base)</h2>
+  <div class="cgrid" style="max-width:640px"><div><label for="p-dsc">Cenário</label><select id="p-dsc"></select></div><div><label for="p-dpa">País</label><select id="p-dpa"></select></div></div>
+  <p class="note" id="dpd-note"></p>
+  <div class="scroll"><table id="t-dpd"></table></div>
+  <details><summary>Como montar o CSV a partir do NGFS Scenario Explorer</summary>
+    <p class="note">1. Acesse o NGFS Scenario Explorer da IIASA, base “NGFS Phase 5 Short-Term” (entrada como convidado). 2. Filtre a região Brazil e as variáveis de probabilidade de default por setor, todos os cenários. 3. Exporte em CSV (formato largo: Model, Scenario, Region, Variable, Unit, 2024…2030) e carregue aqui. O app reconhece o setor pelo último trecho do nome da variável. Formato longo alternativo:</p>
+<pre>cenario,pais,setor,ano,delta_pd_pp
+Highway to Paris,Brasil,Agriculture,2030,0.8
+Disasters and Policy Stagnation,Brasil,Agriculture,2026,25.77</pre>
+  </details>
+</div></section>
+
+<section class="band" id="metodo"><div class="wrap">
+  <h2>Metodologia</h2>
+  <div class="cols">
+    <div>
+      <h3>Origem da ΔPD</h3>
+      <p>Os cenários de curto prazo do NGFS (maio de 2025) combinam três modelos: GEM-E3 (economia e setores), EIRIN (macrofinanceiro) e CLIMACRED (crédito). O CLIMACRED é um modelo estrutural de firma: o default ocorre quando o valor dos ativos cai abaixo das dívidas, e a mudança de expectativa do mercado sobre o cenário reprecifica ativos e fluxos de caixa. A saída é ΔPD = PD<sub>cenário</sub> − PD<sub>base</sub>, em p.p., por setor, país e ano.</p>
+      <h3>Aplicação ao contrato</h3>
+      <p>Soma direta: PD<sub>s</sub> = PD + ΔPD. Deslocamento: Δz = Φ⁻¹(PD<sub>ref</sub> + ΔPD) − Φ⁻¹(PD<sub>ref</sub>) e PD<sub>s</sub> = Φ(Φ⁻¹(PD) + Δz). Piso de PD de 0,030%.</p>
+    </div>
+    <div>
+      <h3>Perdas e capital</h3>
+      <p>Perda esperada = PD × LGD × EAD. Capital econômico pela fórmula ASRF de Basileia (CRE31, corporativo, 99,9%, ajuste de prazo M entre 1 e 5 anos). Excesso sobre provisão = Σ max(0, PE − provisão constituída). Impactos em % do Patrimônio de Referência informado. Balanço estático.</p>
+      <h3>Limites</h3>
+      <p>A ΔPD ilustrativa usa como âncoras valores publicados (<span class="anc">em vermelho</span> na tabela) e premissas para os demais setores: substitua pelo CSV do IIASA antes de qualquer uso. LGD fixa; sem geografia intra-país; sem mitigadores como Proagro e seguro rural; horizonte da PD do CLIMACRED a confirmar na documentação técnica.</p>
+    </div>
+  </div>
+  <h3>Referências</h3>
+  <ul class="note">
+    <li>NGFS (2025). NGFS Short-Term Scenarios for central banks and supervisors; Technical documentation. Dados: Battiston et al. (2025), NGFS Phase 5 Short Term Scenarios, Zenodo 10.5281/zenodo.15790097.</li>
+    <li>Mandel, A., Battiston, S., Monasterolo, I. (2025). Mapping global financial risks under climate change. Nature Climate Change, 15, 329–334.</li>
+    <li>Battiston, S., Mandel, A., Monasterolo, I., Roncoroni, A. (2023). Climate credit risk and corporate valuation. CEPR DP20239.</li>
+    <li>Barón, A., Dassatti, C., Lavagna, G., Montañez-Enríquez, R. (2026). Assessing climate risks in Uruguay’s banks using NGFS short-term scenarios. Latin American Journal of Central Banking, 7, 100198.</li>
+    <li>BCBS. CRE31 – IRB approach: risk weight functions. Resolução CMN 4.557/2017, com redação da Resolução CMN 4.943/2021.</li>
+  </ul>
+</div></section>
+
+<section class="band" id="relatorio" style="background:var(--panel)"><div class="wrap">
+  <h2>Relatório de impacto</h2>
+  <div id="rep"></div>
+</div></section>
+
+<script>
+{
+const YEARS=[2025,2026,2027,2028,2029,2030];
+const SC=[
+ {id:'H2P',curto:'H2P',nome:'Highway to Paris',tipo:'Transição ordenada',cor:'var(--slate)',dash:''},
+ {id:'SWUC',curto:'SWUC',nome:'Sudden Wake-Up Call',tipo:'Transição abrupta',cor:'var(--slate)',dash:'6 4'},
+ {id:'DIRE',curto:'DIRE',nome:'Diverging Realities',tipo:'Físico no Brasil (seco 2026, úmido 2029)',cor:'var(--red)',dash:'6 4'},
+ {id:'DAPS_AS',curto:'DAPS Am. Sul',nome:'Disasters and Policy Stagnation – América do Sul',tipo:'Físico (seco 2026, úmido 2027)',cor:'var(--red)',dash:''},
+ {id:'DAPS_ASIA',curto:'DAPS Ásia',nome:'Disasters and Policy Stagnation – Ásia',tipo:'Contágio via comércio',cor:'var(--grey)',dash:''}];
+const SEC=[
+ ['agri','Agricultura','Agriculture'],['forest','Silvicultura e biomassa','Biomass solid / forestry'],['coal','Carvão','Coal'],['crude','Petróleo bruto','Crude oil'],['gas','Gás natural','Gas'],['oil','Derivados de petróleo','Oil'],['power','Energia elétrica','Power supply'],['ferrous','Metais ferrosos','Ferrous metals'],['nonferrous','Metais não ferrosos','Non-ferrous metals'],['chem','Química','Chemical products'],['eint','Outras ind. intensivas em energia','Other energy intensive'],['elec','Bens elétricos','Electric goods'],['transeq','Equipamentos de transporte','Transport equipment'],['otheq','Outros bens de capital','Other equipment goods'],['cons','Bens de consumo e alimentos','Consumer goods industries'],['constr','Construção','Construction'],['landtr','Transporte terrestre','Land transport'],['airtr','Transporte aéreo','Air transport'],['watertr','Transporte aquaviário','Water transport'],['mserv','Serviços de mercado','Market services'],['nmserv','Serviços não mercantis','Non-market services']];
+const SECN=Object.fromEntries(SEC.map(s=>[s[0],s[1]]));
+// ΔPD ilustrativa (p.p.) — picos por setor e perfil temporal por cenário
+const P=(o,d)=>Object.fromEntries(SEC.map(s=>[s[0],o[s[0]]??d]));
+const ILL={
+ H2P:{prof:[[[.2,.4,.6,.8,.9,1],P({coal:20,crude:6,gas:4,oil:5,power:.5,ferrous:3,nonferrous:1.5,chem:2,eint:3,elec:-.5,transeq:1,otheq:.3,cons:.3,constr:-.2,landtr:1.5,airtr:2.5,watertr:1,mserv:.1,nmserv:0,agri:.8,forest:-.5},0)]]},
+ SWUC:{prof:[[[0,0,.9,1,1,1],P({coal:35,crude:12,gas:8,oil:10,power:2,ferrous:6,nonferrous:3,chem:4,eint:6,elec:.5,transeq:2.5,otheq:1,cons:1,constr:1,landtr:3,airtr:5,watertr:2,mserv:.5,nmserv:.2,agri:1.5,forest:.5},0)]]},
+ DIRE:{prof:[[[0,1,.35,.12,0,0],P({agri:23.30,forest:18,power:6,watertr:4,cons:3,constr:3,mserv:2,landtr:2,ferrous:2,nonferrous:2,eint:2,chem:1.5,nmserv:.5},1)],[[0,0,0,0,1,.35],P({agri:8,forest:5,power:4,constr:6,landtr:4,watertr:3,mserv:2,cons:2,nmserv:.5},1)]]},
+ DAPS_AS:{prof:[[[0,1,.3,.1,.05,0],P({agri:25.77,forest:20,power:8,watertr:5,constr:4,cons:4,mserv:2.5,landtr:2.5,eint:2.5,ferrous:2.5,nonferrous:2.5,chem:2,nmserv:.5},1.5)],[[0,0,1,.3,.1,.05],P({agri:10,forest:6,power:11,constr:8,landtr:6,watertr:4,mserv:4,cons:3,eint:3,ferrous:3,chem:2,nmserv:1},2)]]},
+ DAPS_ASIA:{prof:[[[0,1,.6,.2,.05,0],P({agri:1.5,ferrous:2,nonferrous:2,crude:1,cons:.8,mserv:.3,nmserv:0},.5)]]}};
+const ANC={'DIRE|agri|2026':'Barón et al. (2026), América do Sul: 23,30 p.p.','DAPS_AS|agri|2026':'Barón et al. (2026), América do Sul: 25,77 p.p.','SWUC|coal|2030':'NGFS (2025), mundo: +35 p.p. no carvão','SWUC|crude|2030':'NGFS (2025), mundo: +12 p.p. no petróleo','DAPS_AS|power|2027':'NGFS (2025): mais de 10 p.p. em energia elétrica'};
+function illustrative(){const D={Brasil:{}};for(const s of SC){D.Brasil[s.id]={};for(const [k] of SEC){D.Brasil[s.id][k]=YEARS.map((y,i)=>ILL[s.id].prof.reduce((a,[pr,pk])=>a+pr[i]*pk[k],0))}}return D}
+const CNAE=d=>{d=+d;if(d===1||d===3)return'agri';if(d===2||d===16)return'forest';if(d===5)return'coal';if(d===6)return'crude';if(d===7)return'ferrous';if(d===8||d===9)return'eint';if(d>=10&&d<=15)return'cons';if(d===17||d===18||d===23)return'eint';if(d===19)return'oil';if(d>=20&&d<=22)return'chem';if(d===24)return'ferrous';if(d===25||d===28)return'otheq';if(d===26||d===27)return'elec';if(d===29||d===30)return'transeq';if(d>=31&&d<=33)return'cons';if(d===35)return'power';if(d>=41&&d<=43)return'constr';if(d===49)return'landtr';if(d===50)return'watertr';if(d===51)return'airtr';if(d>=84&&d<=88)return'nmserv';if(d>=36)return'mserv';return null};
+const MAPROWS=[['01, 03','agri'],['02, 16','forest'],['05','coal'],['06','crude'],['07, 24','ferrous'],['08, 09, 17, 18, 23','eint'],['10–15, 31–33','cons'],['19','oil'],['20–22','chem'],['25, 28','otheq'],['26, 27','elec'],['29, 30','transeq'],['35','power'],['41–43','constr'],['49','landtr'],['50','watertr'],['51','airtr'],['84–88','nmserv'],['36–39, 45–47, 52–83, 90–99','mserv']];
+// números
+const NF=new Intl.NumberFormat('pt-BR',{minimumFractionDigits:3,maximumFractionDigits:3});
+const f3=x=>NF.format(Math.abs(x)<5e-4?0:x), pc=x=>f3(100*x)+'%';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function ncdf(x){const t=1/(1+.2316419*Math.abs(x)),d=.3989422804014327*Math.exp(-x*x/2),p=d*t*(.31938153+t*(-.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));return x>0?1-p:p}
+function ninv(p){const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.357751867269,-30.66479806614716,2.506628277459239],b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],c=[-.007784894002430293,-.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],d=[.007784695709041462,.3224671290700398,2.445134137142996,3.754408661907416],pl=.02425;let q,r;if(p<pl){q=Math.sqrt(-2*Math.log(p));return(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}if(p>1-pl){q=Math.sqrt(-2*Math.log(1-p));return-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}q=p-.5;r=q*q;return(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)}
+const FLOOR=.0003,CAP=.9999,cl=(x,a,b)=>Math.min(b,Math.max(a,x));
+function K(pd,lgd,m){pd=cl(pd,FLOOR,CAP);const e=(1-Math.exp(-50*pd))/(1-Math.exp(-50)),R=.12*e+.24*(1-e),b=(.11852-.05478*Math.log(pd))**2;const k=(lgd*ncdf((ninv(pd)+Math.sqrt(R)*ninv(.999))/Math.sqrt(1-R))-pd*lgd)*(1+(m-2.5)*b)/(1-1.5*b);return Math.max(0,k)}
+// carteira de exemplo (semente fixa)
+function example(){let s=20261125;const rnd=()=>(s=s*16807%2147483647)/2147483647;const pick=w=>{let u=rnd()*w.reduce((a,x)=>a+x[1],0);for(const x of w){if((u-=x[1])<=0)return x[0]}return w[0][0]};
+ const DIV=[[1,10],[2,2],[5,.5],[6,3],[7,3],[10,8],[17,3],[19,2],[20,4],[23,2],[24,4],[29,4],[35,6],[41,6],[46,10],[47,6],[49,6],[50,1],[51,1],[52,3],[62,3],[68,4],[86,3]];
+ const NM={1:'Agropecuária',2:'Florestal',5:'Carbonífera',6:'Petróleo',7:'Mineração',10:'Alimentos',17:'Papel e Celulose',19:'Refinaria',20:'Química',23:'Cimentos',24:'Siderúrgica',29:'Autopeças',35:'Energia',41:'Construtora',46:'Distribuidora',47:'Varejo',49:'Transportes',50:'Navegação',51:'Linhas Aéreas',52:'Logística',62:'Sistemas',68:'Empreendimentos',86:'Hospital'};
+ const SUF=['Alfa','Horizonte','Paulista','do Cerrado','Atlântico','Serra Azul','Vale Verde','Pampa','Litoral','Central','Nova Era','Santa Clara','Ipê','Aurora','Boa Vista'];
+ const RT=[['AA',.0005,8],['A',.0015,17],['BBB',.004,30],['BB',.012,25],['B',.035,15],['CCC',.12,5]];
+ const out=[];for(let i=1;i<=160;i++){const dv=pick(DIV),r=pick(RT.map(x=>[x,x[2]])),z=Math.sqrt(-2*Math.log(rnd()))*Math.cos(2*Math.PI*rnd());
+  const pd=r[1]*Math.exp(.15*(rnd()*2-1)),ead=Math.round(60*Math.exp(.9*z)*1000)/1000,lgd=rnd()<.7?.45:.35;
+  const uf=dv<=2?pick([['MT',4],['GO',2],['PR',2],['RS',2],['MS',1],['BA',1]]):pick([['SP',6],['RJ',2],['MG',2],['PR',1],['RS',1],['PE',1]]);
+  const pais=rnd()<.93?'Brasil':pick([['Estados Unidos',1],['Chile',1],['Argentina',1]]);
+  out.push({id:'C'+String(i).padStart(4,'0'),cliente:(NM[dv]||'Empresa')+' '+SUF[Math.floor(rnd()*SUF.length)]+' S.A.',cnae:String(dv).padStart(2,'0'),setor_ngfs:'',pais,uf,rating:r[0],pd:Math.round(pd*1e6)/1e6,lgd,ead,prazo:[1,2,2.5,3,4,5][Math.floor(rnd()*6)],prov:Math.round(pd*lgd*ead*(.8+.8*rnd())*1000)/1000})}
+ return out}
+// CSV
+function splitLine(l,dl){const o=[];let c='',q=false;for(let i=0;i<l.length;i++){const ch=l[i];if(ch==='"'){if(q&&l[i+1]==='"'){c+='"';i++}else q=!q}else if(ch===dl&&!q){o.push(c);c=''}else c+=ch}o.push(c);return o.map(x=>x.trim())}
+function parseCSV(t){const L=t.replace(/^﻿/,'').split(/\r?\n/).filter(x=>x.trim());if(!L.length)return[];const dl=(L[0].split(';').length>L[0].split(',').length)?';':',';const h=splitLine(L[0],dl).map(x=>x.toLowerCase());return L.slice(1).map(l=>{const v=splitLine(l,dl);return Object.fromEntries(h.map((k,i)=>[k,v[i]??'']))})}
+const num=v=>{if(v==null)return NaN;let s=String(v).trim().replace(/\s|%/g,'');if(s.includes(',')&&s.includes('.'))s=s.replace(/\./g,'').replace(',','.');else s=s.replace(',','.');return parseFloat(s)};
+const LAY=[['id_contrato','texto','Identificador único','C0001'],['cliente','texto','Nome ou código do tomador','Agropecuária Alfa S.A.'],['cnae','texto','Divisão CNAE 2.0 (2 dígitos)','01'],['setor_ngfs','texto, opcional','Setor GEM-E3 (código do app ou nome em inglês); prevalece sobre o CNAE','agri'],['pais','texto','País de risco','Brasil'],['uf','texto, opcional','UF da atividade (reservado para choque geográfico)','MT'],['rating','texto, opcional','Rating interno','BB'],['pd_12m','decimal','PD de 12 meses','0.012'],['lgd','decimal','LGD','0.45'],['ead','número','Exposição no default (R$ mi)','85.4'],['prazo_anos','número','Prazo efetivo M (anos)','3'],['provisao','número, opcional','Provisão constituída (R$ mi)','0.52']];
+function loadCart(rows){const out=[],bad=[];rows.forEach((r,i)=>{const o={id:r.id_contrato||r.id||('L'+(i+2)),cliente:r.cliente||'',cnae:String(r.cnae||'').replace(/\D/g,'').slice(0,2).padStart(2,'0'),setor_ngfs:(r.setor_ngfs||'').trim(),pais:r.pais||'Brasil',uf:r.uf||'',rating:r.rating||'',pd:num(r.pd_12m??r.pd),lgd:num(r.lgd),ead:num(r.ead),prazo:num(r.prazo_anos??r.prazo),prov:num(r.provisao??r.prov)};if(!(o.pd>=0&&o.pd<1&&o.lgd>=0&&o.lgd<=1&&o.ead>=0)){bad.push(i+2);return}if(!(o.prazo>0))o.prazo=2.5;if(!(o.prov>=0))o.prov=0;out.push(o)});return{out,bad}}
+const KEYS=[[/coal fired|gas fired|oil fired|\bpv\b|wind|hydro|nuclear|power|electricity/i,'power'],[/non.?ferrous/i,'nonferrous'],[/ferrous/i,'ferrous'],[/coal/i,'coal'],[/crude/i,'crude'],[/biomass|forest/i,'forest'],[/agri/i,'agri'],[/chemical/i,'chem'],[/energy.?intensive/i,'eint'],[/electric/i,'elec'],[/transport equip/i,'transeq'],[/equipment/i,'otheq'],[/consumer/i,'cons'],[/construction/i,'constr'],[/land transport/i,'landtr'],[/air transport/i,'airtr'],[/water transport/i,'watertr'],[/non.?market/i,'nmserv'],[/market services/i,'mserv'],[/\bgas\b/i,'gas'],[/\boil\b/i,'oil']];
+const secId=n=>{if(!n)return null;const t=String(n).trim();if(SECN[t])return t;for(const [re,id] of KEYS)if(re.test(t))return id;return null};
+const PAIS={brazil:'Brasil','united states':'Estados Unidos',usa:'Estados Unidos',chile:'Chile',argentina:'Argentina',mexico:'México','south america':'América do Sul'};
+function loadDPD(rows){const D={},scen={},acc={};let n=0;const add=(sc,pa,se,y,v)=>{const id=secId(se);const yi=YEARS.indexOf(+y);if(!id||yi<0||!isFinite(v))return;pa=PAIS[String(pa).toLowerCase()]||pa;const key=[pa,sc,id,yi].join('|');(acc[key]=acc[key]||[]).push(v);scen[sc]=1;n++};
+ if(rows.length&&'variable' in rows[0]){for(const r of rows){if(!/default/i.test(r.variable))continue;const se=r.variable.split('|').pop();for(const y of YEARS){const v=num(r[String(y)]);if(isFinite(v))add(r.scenario,r.region,se,y,/%|pp/i.test(r.unit||'%')?v:v*100)}}}
+ else for(const r of rows)add(r.cenario||r.scenario,r.pais||r.region||'Brasil',r.setor||r.sector,r.ano||r.year,num(r.delta_pd_pp));
+ for(const [key,vs] of Object.entries(acc)){const [pa,sc,id,yi]=key.split('|');D[pa]=D[pa]||{};D[pa][sc]=D[pa][sc]||{};D[pa][sc][id]=D[pa][sc][id]||YEARS.map(()=>0);D[pa][sc][id][+yi]=vs.reduce((a,b)=>a+b,0)/vs.length}
+ const list=Object.keys(scen).filter(s=>!/baseline|^base$/i.test(s));return{D,list,n}}
+// estado
+const st={cart:example(),cartSrc:'ex',D:illustrative(),scen:SC.slice(),dpdSrc:'ill'};
+const $=id=>document.getElementById(id);
+function params(){return{mode:$('p-mode').value,year:$('p-year').value,ref:$('p-ref').value,refFix:cl(num($('p-reffix').value)/100,FLOOR,.5),pr:Math.max(1,num($('p-pr').value)||1800),pais:$('p-pais').value||'Brasil'}}
+function compute(){const p=params(),C=st.cart;
+ for(const c of C){c.sec=secId(c.setor_ngfs)||CNAE(c.cnae);c.pdb=Math.max(c.pd,FLOOR);c.m=cl(c.prazo,1,5);c.capb=K(c.pdb,c.lgd,c.m)*c.ead;c.peb=c.pdb*c.lgd*c.ead}
+ const ref={},w={};for(const c of C){if(!c.sec)continue;ref[c.sec]=(ref[c.sec]||0)+c.pdb*c.ead;w[c.sec]=(w[c.sec]||0)+c.ead}for(const k in ref)ref[k]=p.ref==='fix'?p.refFix:ref[k]/w[k];
+ const dpdOf=(c,sc,yi)=>{const T=(st.D[c.pais]||st.D[p.pais]||{})[sc.id];return T&&T[c.sec]?T[c.sec][yi]:null};
+ const stress=(c,d,mode)=>{if(d==null)return c.pdb;if(mode==='add')return cl(c.pdb+d/100,FLOOR,CAP);const r=cl(ref[c.sec],FLOOR,.9),dz=ninv(cl(r+d/100,1e-6,CAP))-ninv(r);return cl(ncdf(ninv(c.pdb)+dz),FLOOR,CAP)};
+ const B={ead:0,pe:0,cap:0,pdw:0,exc:0,cov:0};for(const c of C){B.ead+=c.ead;B.pe+=c.peb;B.cap+=c.capb;B.pdw+=c.pdb*c.ead;B.exc+=Math.max(0,c.peb-c.prov)}
+ const R=st.scen.map(sc=>{const yr={add:[],dz:[]};for(const mode of['add','dz'])YEARS.forEach((y,yi)=>{let pe=0,cap=0,pdw=0,exc=0,cov=0;for(const c of C){const d=dpdOf(c,sc,yi);if(d!=null)cov+=c.ead;const ps=stress(c,d,mode),x=ps*c.lgd*c.ead;pe+=x;cap+=K(ps,c.lgd,c.m)*c.ead;pdw+=ps*c.ead;exc+=Math.max(0,x-c.prov)}yr[mode].push({y,pe,cap,pdw:pdw/B.ead,exc,cov:cov/B.ead,dpe:pe-B.pe,dcap:cap-B.cap,tot:pe-B.pe+cap-B.cap})});
+  const cur=yr[p.mode];let yi=p.year==='pico'?cur.reduce((bi,r,i)=>r.tot>cur[bi].tot?i:bi,0):YEARS.indexOf(+p.year);
+  const per=C.map(c=>{const d=dpdOf(c,sc,yi),ps=stress(c,d,p.mode);return{c,d,ps,dpe:(ps-c.pdb)*c.lgd*c.ead,dcap:K(ps,c.lgd,c.m)*c.ead-c.capb}});
+  return{sc,yr,yi,ev:cur[yi],other:yr[p.mode==='dz'?'add':'dz'][yi],per}});
+ return{p,B,R,ref}}
+// desenho
+function draw(){const M=compute(),{p,B,R}=M;st.M=M;const worst=R.reduce((a,r)=>r.ev.tot>a.ev.tot?r:a,R[0]);
+ const pr=p.pr;$('headline').textContent=worst?`${worst.sc.nome}: impacto de ${pc(worst.ev.tot/pr)} do PR em ${YEARS[worst.yi]}`:'Sem cenários carregados';
+ $('lede').textContent=worst?`No pior cenário, a perda esperada da carteira PJ sobe R$ ${f3(worst.ev.dpe)} mi e o capital econômico R$ ${f3(worst.ev.dcap)} mi, com PD média ponderada de ${pc(B.pdw/B.ead)} para ${pc(worst.ev.pdw)}. ${st.dpdSrc==='ill'?'ΔPD ilustrativa: carregue a série do IIASA para resultados de uso real.':'ΔPD carregada pelo usuário.'}`:'';
+ const k=[[f3(B.ead),'EAD da carteira (R$ mi)'],[f3(B.pe),'Perda esperada base (R$ mi)'],[f3(B.cap),'Capital econômico base (R$ mi)'],[worst?'+'+f3(worst.ev.dpe):'–','Δ perda esperada, pior cenário (R$ mi)'],[worst?'+'+f3(worst.ev.dcap):'–','Δ capital, pior cenário (R$ mi)'],[worst?pc(worst.ev.tot/pr):'–','Δ total em % do PR']];
+ $('kpis').innerHTML=k.map(([b,s])=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+ const mx=Math.max(1e-9,...R.map(r=>Math.max(0,r.ev.dpe)+Math.max(0,r.ev.dcap)))/pr;
+ $('bars').innerHTML=R.map(r=>`<div class="row"><div class="lab">${esc(r.sc.nome)}<small>${esc(r.sc.tipo||'')} · ${YEARS[r.yi]}</small></div><div class="track"><div class="seg" style="width:${100*Math.max(0,r.ev.dpe)/pr/mx}%;background:var(--red)"></div><div class="seg" style="width:${100*Math.max(0,r.ev.dcap)/pr/mx}%;background:var(--slate)"></div></div><div class="val">${pc(r.ev.tot/pr)}</div></div>`).join('');
+ drawTraj();
+ $('cen-note').textContent=`Ano de avaliação: ${p.year==='pico'?'pico de cada cenário (maior soma de Δ perda esperada e Δ capital)':p.year}. Aplicação: ${p.mode==='dz'?'deslocamento Δz':'soma direta'}. Valores em R$ mi; variações sobre a linha de base.`;
+ $('t-cen').innerHTML='<thead><tr><th>Cenário</th><th class="n">Ano</th><th class="n">PD média</th><th class="n">Perda esperada</th><th class="n">Δ PE</th><th class="n">Capital ASRF</th><th class="n">Δ capital</th><th class="n">Δ PE líquida de provisão</th><th class="n">Δ total % PR</th><th class="n">EAD com ΔPD</th></tr></thead><tbody>'+`<tr><td>Linha de base</td><td class="n">–</td><td class="n">${pc(B.pdw/B.ead)}</td><td class="n">${f3(B.pe)}</td><td class="n">–</td><td class="n">${f3(B.cap)}</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="n">–</td></tr>`+R.map(r=>`<tr><td>${esc(r.sc.nome)}</td><td class="n">${YEARS[r.yi]}</td><td class="n">${pc(r.ev.pdw)}</td><td class="n">${f3(r.ev.pe)}</td><td class="n">${f3(r.ev.dpe)}</td><td class="n">${f3(r.ev.cap)}</td><td class="n">${f3(r.ev.dcap)}</td><td class="n">${f3(r.ev.exc-B.exc)}</td><td class="n">${pc(r.ev.tot/pr)}</td><td class="n">${pc(r.ev.cov)}</td></tr>`).join('')+'</tbody>';
+ // heat
+ const secs=[...new Set(st.cart.map(c=>c.sec||'—'))];const H=secs.map(s=>({s,ead:st.cart.filter(c=>(c.sec||'—')===s).reduce((a,c)=>a+c.ead,0),v:R.map(r=>r.per.filter(x=>(x.c.sec||'—')===s).reduce((a,x)=>a+x.dpe,0))})).sort((a,b)=>Math.max(...b.v)-Math.max(...a.v));const hm=Math.max(1e-9,...H.flatMap(h=>h.v));
+ const top=H[0];$('h-set').textContent=top?`${SECN[top.s]||'Sem setor'} concentra a maior perda incremental`:'Onde a perda se concentra';
+ $('t-heat').innerHTML='<thead><tr><th>Setor GEM-E3</th><th class="n">EAD</th>'+R.map(r=>`<th class="n" title="${esc(r.sc.nome)}">${esc(r.sc.curto||r.sc.nome.slice(0,14))}</th>`).join('')+'</tr></thead><tbody>'+H.map(h=>`<tr><td>${esc(SECN[h.s]||'Sem mapeamento')}</td><td class="n">${f3(h.ead)}</td>`+h.v.map(v=>`<td class="n" style="background:color-mix(in srgb,var(--red) ${Math.round(70*Math.max(0,v)/hm)}%,transparent)">${f3(v)}</td>`).join('')+'</tr>').join('')+`<tr class="tot"><td>Total</td><td class="n">${f3(B.ead)}</td>`+R.map(r=>`<td class="n">${f3(r.ev.dpe)}</td>`).join('')+'</tr></tbody>';
+ // top
+ if(worst){const T=worst.per.slice().sort((a,b)=>(b.dpe+b.dcap)-(a.dpe+a.dcap)).slice(0,12);$('h-top').textContent=`Contratos mais afetados em ${worst.sc.nome}, ${YEARS[worst.yi]}`;
+ $('t-top').innerHTML='<thead><tr><th>Contrato</th><th>Cliente</th><th>Setor</th><th>Rating</th><th class="n">EAD</th><th class="n">ΔPD setor (p.p.)</th><th class="n">PD base</th><th class="n">PD estressada</th><th class="n">Δ PE</th><th class="n">Δ capital</th></tr></thead><tbody>'+T.map(x=>`<tr><td>${esc(x.c.id)}</td><td>${esc(x.c.cliente)}</td><td>${esc(SECN[x.c.sec]||'–')}</td><td>${esc(x.c.rating)}</td><td class="n">${f3(x.c.ead)}</td><td class="n">${x.d==null?'–':f3(x.d)}</td><td class="n">${pc(x.c.pdb)}</td><td class="n">${pc(x.ps)}</td><td class="n">${f3(x.dpe)}</td><td class="n">${f3(x.dcap)}</td></tr>`).join('')+'</tbody>'}
+ // comparação
+ const ma=p.mode==='dz'?'other':'ev',md=p.mode==='dz'?'ev':'other';
+ $('t-cmp').innerHTML='<thead><tr><th>Cenário</th><th class="n">Ano</th><th class="n">Δ PE soma direta</th><th class="n">Δ PE via Δz</th><th class="n">Δ capital soma direta</th><th class="n">Δ capital via Δz</th><th class="n">Δ total soma direta % PR</th><th class="n">Δ total via Δz % PR</th></tr></thead><tbody>'+R.map(r=>`<tr><td>${esc(r.sc.nome)}</td><td class="n">${YEARS[r.yi]}</td><td class="n">${f3(r[ma].dpe)}</td><td class="n">${f3(r[md].dpe)}</td><td class="n">${f3(r[ma].dcap)}</td><td class="n">${f3(r[md].dcap)}</td><td class="n">${pc(r[ma].tot/pr)}</td><td class="n">${pc(r[md].tot/pr)}</td></tr>`).join('')+'</tbody>';
+ // entrada
+ $('t-lay').innerHTML='<thead><tr><th>Coluna</th><th>Tipo</th><th>Descrição</th><th>Exemplo</th></tr></thead><tbody>'+LAY.map(l=>`<tr><td><code>${l[0]}</code></td><td>${l[1]}</td><td>${l[2]}</td><td>${esc(l[3])}</td></tr>`).join('')+'</tbody>';
+ const nm=st.cart.filter(c=>!c.sec);$('cart-sum').innerHTML=`<p>${st.cart.length} contratos · EAD R$ ${f3(B.ead)} mi · PD média ${pc(B.pdw/B.ead)} · provisão R$ ${f3(st.cart.reduce((a,c)=>a+c.prov,0))} mi.${nm.length?` <strong>${nm.length} contratos sem setor mapeado</strong> (EAD R$ ${f3(nm.reduce((a,c)=>a+c.ead,0))} mi) ficam sem choque.`:' Todos os contratos mapeados para um setor.'}</p>`;
+ $('t-map').innerHTML='<thead><tr><th>Divisões CNAE</th><th>Setor GEM-E3</th></tr></thead><tbody>'+MAPROWS.map(m=>`<tr><td>${m[0]}</td><td>${SECN[m[1]]}</td></tr>`).join('')+'</tbody>';
+ $('t-prev').innerHTML='<thead><tr><th>id</th><th>cliente</th><th>cnae</th><th>setor</th><th>país</th><th>uf</th><th>rating</th><th class="n">pd</th><th class="n">lgd</th><th class="n">ead</th><th class="n">prazo</th><th class="n">provisão</th></tr></thead><tbody>'+st.cart.slice(0,15).map(c=>`<tr><td>${esc(c.id)}</td><td>${esc(c.cliente)}</td><td>${esc(c.cnae)}</td><td>${esc(SECN[c.sec]||'–')}</td><td>${esc(c.pais)}</td><td>${esc(c.uf)}</td><td>${esc(c.rating)}</td><td class="n">${pc(c.pd)}</td><td class="n">${pc(c.lgd)}</td><td class="n">${f3(c.ead)}</td><td class="n">${f3(c.prazo)}</td><td class="n">${f3(c.prov)}</td></tr>`).join('')+'</tbody>';
+ drawDPD();report(M,worst)}
+function drawTraj(){const s=$('traj'),M=st.M;if(!M)return;const W=s.clientWidth,H=s.clientHeight;if(!W||!H)return;const R=M.R,mode=M.p.mode;const L=52,Rm=W<520?14:150,T=14,Bm=30;const vals=R.flatMap(r=>r.yr[mode].map(x=>x.dpe));const mx=Math.max(1e-9,...vals),mn=Math.min(0,...vals);
+ const X=i=>L+(W-L-Rm)*i/(YEARS.length-1),Y=v=>T+(H-T-Bm)*(1-(v-mn)/(mx-mn));const nt=4,step=(mx-mn)/nt;let g='';
+ for(let i=0;i<=nt;i++){const v=mn+i*step;g+=`<line x1="${L}" x2="${W-Rm}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${L-6}" y="${Y(v)+4}" text-anchor="end">${Math.round(v)}</text>`}
+ YEARS.forEach((y,i)=>{if(W<520&&i%2)return;g+=`<text x="${X(i)}" y="${H-8}" text-anchor="middle">${y}</text>`});
+ const ends=[];R.forEach(r=>{const pts=r.yr[mode].map((x,i)=>`${X(i)},${Y(x.dpe)}`).join(' ');g+=`<polyline points="${pts}" fill="none" stroke="${r.sc.cor||'var(--slate)'}" stroke-width="2.5" stroke-dasharray="${r.sc.dash||''}"/>`;r.yr[mode].forEach((x,i)=>{g+=`<circle cx="${X(i)}" cy="${Y(x.dpe)}" r="3" fill="${r.sc.cor||'var(--slate)'}"/>`});ends.push({y:Y(r.yr[mode][YEARS.length-1].dpe),t:r.sc.curto||r.sc.nome.slice(0,14)})});
+ if(W>=520){ends.sort((a,b)=>a.y-b.y);for(let i=1;i<ends.length;i++)if(ends[i].y-ends[i-1].y<15)ends[i].y=ends[i-1].y+15;ends.forEach(e=>{g+=`<text x="${W-Rm+8}" y="${e.y+4}">${esc(e.t)}</text>`})}
+ s.innerHTML=g}
+function drawDPD(){const sc=$('p-dsc'),pa=$('p-dpa');const cur=sc.value,cp=pa.value;sc.innerHTML=st.scen.map(s=>`<option value="${esc(s.id)}">${esc(s.nome)}</option>`).join('');if(st.scen.some(s=>s.id===cur))sc.value=cur;const ps=Object.keys(st.D);pa.innerHTML=ps.map(x=>`<option>${esc(x)}</option>`).join('');if(ps.includes(cp))pa.value=cp;
+ const T=(st.D[pa.value]||{})[sc.value]||{};const ids=Object.keys(T);
+ $('dpd-note').textContent=st.dpdSrc==='ill'?'Valores ilustrativos. Em vermelho, âncoras de fontes publicadas (passe o cursor para ver a fonte); os demais são premissas a substituir pela série do IIASA.':'Valores carregados pelo usuário.';
+ $('t-dpd').innerHTML='<thead><tr><th>Setor</th>'+YEARS.map(y=>`<th class="n">${y}</th>`).join('')+'</tr></thead><tbody>'+ids.map(id=>`<tr><td>${esc(SECN[id]||id)}</td>`+T[id].map((v,i)=>{const a=st.dpdSrc==='ill'&&ANC[`${sc.value}|${id}|${YEARS[i]}`];return `<td class="n${a?' anc':''}"${a?` title="${esc(a)}"`:''}>${f3(v)}</td>`}).join('')+'</tr>').join('')+'</tbody>'}
+function report(M,worst){const {p,B,R}=M;if(!worst){$('rep').innerHTML='';return}
+ const best=R.reduce((a,r)=>r.ev.tot<a.ev.tot?r:a,R[0]);const nm=st.cart.filter(c=>!c.sec).reduce((a,c)=>a+c.ead,0);
+ const par=[`Escopo. Carteira PJ com ${st.cart.length} contratos e EAD de R$ ${f3(B.ead)} mi${st.cartSrc==='ex'?' (carteira de exemplo, fictícia)':''}. Perda esperada base de R$ ${f3(B.pe)} mi e capital econômico base (ASRF) de R$ ${f3(B.cap)} mi. Patrimônio de Referência considerado: R$ ${f3(p.pr)} mi.`,
+ `Cenários. ${R.length} cenários de curto prazo do NGFS (2025–2030), com ΔPD por setor ${st.dpdSrc==='ill'?'ilustrativa, ancorada em valores publicados e premissas para os demais setores':'carregada a partir da série informada pelo usuário'}. A ΔPD foi aplicada ${p.mode==='dz'?'por deslocamento Δz a partir da PD de referência do setor':'por soma direta em pontos percentuais'}; ano de avaliação: ${p.year==='pico'?'pico de cada cenário':p.year}.`,
+ `Resultado. O cenário mais severo é ${worst.sc.nome} (${YEARS[worst.yi]}): perda esperada +R$ ${f3(worst.ev.dpe)} mi, capital econômico +R$ ${f3(worst.ev.dcap)} mi, total de ${pc(worst.ev.tot/p.pr)} do PR. O mais brando é ${best.sc.nome}, com ${pc(best.ev.tot/p.pr)} do PR. Líquida das provisões constituídas, a perda incremental no pior cenário é de R$ ${f3(worst.ev.exc-B.exc)} mi.`,
+ `Sensibilidade ao método. Pela ${p.mode==='dz'?'soma direta':'via Δz'}, o impacto total no pior cenário seria de ${pc(worst.other.tot/p.pr)} do PR, contra ${pc(worst.ev.tot/p.pr)} no método escolhido.`,
+ `Cobertura e limites. ${nm>0?`R$ ${f3(nm)} mi de EAD sem setor mapeado ficaram sem choque. `:''}Balanço estático, LGD constante, sem geografia intra-país e sem mitigadores (seguro rural, Proagro, garantias públicas). O capital ASRF é tratado como capital econômico; na abordagem padronizada o RWA regulatório não reage à PD, e o efeito regulatório se dá pela perda esperada e pelas provisões.`];
+ $('rep').innerHTML=par.map(t=>`<p style="max-width:75ch">${esc(t)}</p>`).join('')+'<div class="scroll"><table><thead><tr><th>Cenário</th><th class="n">Ano</th><th class="n">Δ PE</th><th class="n">Δ capital</th><th class="n">Δ total % PR</th></tr></thead><tbody>'+R.map(r=>`<tr><td>${esc(r.sc.nome)}</td><td class="n">${YEARS[r.yi]}</td><td class="n">${f3(r.ev.dpe)}</td><td class="n">${f3(r.ev.dcap)}</td><td class="n">${pc(r.ev.tot/p.pr)}</td></tr>`).join('')+'</tbody></table></div>';
+ st.repText='RELATÓRIO DE IMPACTO – ESTRESSE CLIMÁTICO (NGFS CURTO PRAZO / CLIMACRED)\n\n'+par.join('\n\n')+'\n\nCenário | Ano | Δ PE (R$ mi) | Δ capital (R$ mi) | Δ total % PR\n'+R.map(r=>`${r.sc.nome} | ${YEARS[r.yi]} | ${f3(r.ev.dpe)} | ${f3(r.ev.dcap)} | ${pc(r.ev.tot/p.pr)}`).join('\n')}
+// eventos
+function flash(t){$('flash').textContent=t;setTimeout(()=>{if($('flash').textContent===t)$('flash').textContent=''},5000)}
+async function copy(t,ok){try{await navigator.clipboard.writeText(t);flash(ok)}catch(e){flash('O navegador bloqueou a cópia; use a versão local da página.')}}
+function initSel(){$('p-year').innerHTML='<option value="pico">Pico de cada cenário</option>'+YEARS.map(y=>`<option>${y}</option>`).join('');const ps=Object.keys(st.D);$('p-pais').innerHTML=ps.map(x=>`<option>${esc(x)}</option>`).join('');if(ps.includes('Brasil'))$('p-pais').value='Brasil'}
+const rd=f=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=ko;r.readAsText(f,'utf-8')});
+$('f-cart').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const {out,bad}=loadCart(parseCSV(await rd(f)));if(!out.length)throw new Error('nenhuma linha válida');st.cart=out;st.cartSrc='up';$('cart-src').textContent=`${f.name}: ${out.length} contratos carregados${bad.length?`; ${bad.length} linhas ignoradas (ex.: linha ${bad.slice(0,5).join(', ')})`:''}.`;draw()}catch(err){$('cart-src').textContent='Não foi possível ler a carteira: '+err.message}});
+$('f-dpd').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const {D,list,n}=loadDPD(parseCSV(await rd(f)));if(!n||!list.length)throw new Error('nenhuma série de ΔPD reconhecida');st.D=D;st.scen=list.map((s,i)=>{const t=/paris/i.test(s)?['Transição ordenada','var(--slate)','']:/wake/i.test(s)?['Transição abrupta','var(--slate)','6 4']:/diverg/i.test(s)?['Físico e transição','var(--red)','6 4']:/disaster|stagnation/i.test(s)?['Físico','var(--red)','']:['','var(--grey)',i%2?'4 3':''];return{id:s,nome:s,tipo:t[0],cor:t[1],dash:t[2]}});st.dpdSrc='up';$('dpd-src').textContent=`${f.name}: ${n} valores, ${list.length} cenários, países ${Object.keys(D).join(', ')}.`;initSel();draw()}catch(err){$('dpd-src').textContent='Não foi possível ler a ΔPD: '+err.message}});
+$('b-ex').onclick=()=>{st.cart=example();st.cartSrc='ex';$('cart-src').textContent='Usando carteira de exemplo (fictícia).';$('f-cart').value='';draw()};
+$('b-dpd0').onclick=()=>{st.D=illustrative();st.scen=SC.slice();st.dpdSrc='ill';$('dpd-src').textContent='Usando ΔPD ilustrativa.';$('f-dpd').value='';initSel();draw()};
+$('b-tpl').onclick=()=>copy(LAY.map(l=>l[0]).join(',')+'\n'+example().slice(0,5).map(c=>[c.id,'"'+c.cliente+'"',c.cnae,c.setor_ngfs,c.pais,c.uf,c.rating,c.pd,c.lgd,c.ead,c.prazo,c.prov].join(',')).join('\n'),'Modelo copiado: cole num arquivo .csv.');
+$('b-res').onclick=()=>{const M=st.M;const h='cenario,ano,id_contrato,setor,delta_pd_pp,pd_base,pd_estressada,ead,lgd,delta_pe,delta_capital';const L=M.R.flatMap(r=>r.per.map(x=>[`"${r.sc.nome}"`,YEARS[r.yi],x.c.id,x.c.sec||'',x.d==null?'':x.d.toFixed(3),x.c.pdb.toFixed(6),x.ps.toFixed(6),x.c.ead,x.c.lgd,x.dpe.toFixed(3),x.dcap.toFixed(3)].join(',')));copy(h+'\n'+L.join('\n'),`Resultados copiados (${L.length} linhas).`)};
+$('b-rep').onclick=()=>copy(st.repText||'','Relatório copiado.');
+['p-mode','p-year','p-ref','p-reffix','p-pr','p-pais'].forEach(id=>$(id).addEventListener('change',draw));
+['p-dsc','p-dpa'].forEach(id=>$(id).addEventListener('change',drawDPD));
+const ro=new ResizeObserver(drawTraj);ro.observe($('trajbox'));
+initSel();draw();
+}
+</script>
+</body>
+</html>
