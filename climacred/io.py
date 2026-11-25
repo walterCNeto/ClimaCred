@@ -86,7 +86,7 @@ def _scenario_meta(ids) -> list[dict]:
 
 
 def load_dpd(src=None) -> dict:
-    """Lê a ΔPD (e a PD de linha de base, se houver).
+    """Lê a ΔPD (e a PD baseline, se houver).
 
     Retorna dict com:
       dpd: DataFrame longo (cenario, pais, setor, ano, delta_pd_pp)

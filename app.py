@@ -38,7 +38,7 @@ def cached_dpd(raw: bytes | None, name: str) -> dict:
     return load_dpd(buf)
 
 
-REF_LABEL = {"ngfs": "PD de linha de base do CLIMACRED (baseline_pd)",
+REF_LABEL = {"ngfs": "PD baseline do CLIMACRED (baseline_pd)",
              "ngfs+cart": "baseline_pd do CLIMACRED (média da carteira onde não há série)", "cart": "Média da carteira por setor (ponderada por EAD)",
              "fix": "Valor único informado"}
 
@@ -432,18 +432,18 @@ with tabs[6]:
     tab.index = tab.index.map(lambda x: f"{SECTOR_NAME.get(x, x)} ({x})")
     bl = data["base"][(data["base"].cenario == sc_sel) & (data["base"].pais == pa_sel)].set_index("ano")["baseline_pd_pp"]
     if len(bl):
-        st.caption("PD de linha de base do CLIMACRED (p.p.), igual para todos os setores: "
+        st.caption("PD baseline do CLIMACRED (p.p.), igual para todos os setores: "
                    + "; ".join(f"{a}: {f3(v)}" for a, v in bl.items()))
     st.dataframe(tab.style.format(f3), width="stretch")
     if dpd_src == "ill":
-        st.caption("Valores ilustrativos (p.p. sobre a linha de base). Âncoras publicadas: "
+        st.caption("Valores ilustrativos (p.p. sobre a baseline). Âncoras publicadas: "
                    + "; ".join(f"{SECTOR_NAME[s]} {y} em {c_}: {t}" for (c_, s, y), t in ANCHORS.items())
                    + ". Os demais são premissas a substituir pela série do IIASA.")
     with st.expander("Como montar o CSV a partir do NGFS Scenario Explorer"):
         st.markdown("1. Acesse https://data.ece.iiasa.ac.at/ngfs-phase-5-short-term/#/downloads e entre como convidado (*Guest login*).\n"
                     "2. Baixe o pacote de dados no fim da página e extraia `CLIMACRED_IIASA_<data>.xlsx`.\n"
                     "3. Salve o arquivo em `data/ngfs/` (carregado automaticamente e fora do git) ou envie pela barra lateral.\n\n"
-                    "Variáveis usadas: `pd_adjustment|<setor>` (ΔPD em p.p.) e `baseline_pd|<setor>` (PD de linha de base). "
+                    "Variáveis usadas: `pd_adjustment|<setor>` (ΔPD em p.p.) e `baseline_pd|<setor>` (PD baseline). "
                     "Formato longo alternativo:")
         st.code("cenario,pais,setor,ano,delta_pd_pp\nHWTP,Brasil,Agriculture,2030,1.536", language="text")
 

@@ -8,7 +8,7 @@ import pandas as pd
 from .config import SECTOR_NAME, YEARS
 
 
-REF_TXT = {"ngfs": "PD de linha de base do CLIMACRED", "ngfs+cart": "PD de linha de base do CLIMACRED (média da carteira onde não há série)", "cart": "PD média da carteira no setor", "fix": "PD de referência informada"}
+REF_TXT = {"ngfs": "PD baseline do CLIMACRED", "ngfs+cart": "PD baseline do CLIMACRED (média da carteira onde não há série)", "cart": "PD média da carteira no setor", "fix": "PD de referência informada"}
 
 
 def f3(x) -> str:
@@ -61,7 +61,7 @@ def pc(x) -> str:
 def scenario_table(out: dict) -> pd.DataFrame:
     b, pr = out["base"], out["params"].pr
     nan = float("nan")
-    rows = [{"Cenário": "Linha de base", "Ano": "–", "PD média": b["pdw"], "Perda esperada": b["pe"], "Δ PE": nan,
+    rows = [{"Cenário": "Base", "Ano": "–", "PD média": b["pdw"], "Perda esperada": b["pe"], "Δ PE": nan,
              "Capital ASRF": b["cap"], "Δ capital": nan, "Δ PE líquida de provisão": nan, "Δ total": nan, "Δ total % PR": nan,
              "EAD com ΔPD": nan}]
     for r in out["results"]:

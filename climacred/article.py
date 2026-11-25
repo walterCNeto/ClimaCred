@@ -261,8 +261,8 @@ REFERENCES = [
     "VASICEK, O. The distribution of loan portfolio value. <i>Risk</i>, v. 15, n. 12, p. 160–162, 2002.",
 ]
 
-REF_TXT = {"ngfs": "a PD de linha de base do próprio CLIMACRED (<i>baseline_pd</i>)",
-           "ngfs+cart": "a PD de linha de base do CLIMACRED, com a média da carteira onde não há série",
+REF_TXT = {"ngfs": "a PD baseline do próprio CLIMACRED (<i>baseline_pd</i>)",
+           "ngfs+cart": "a PD baseline do CLIMACRED, com a média da carteira onde não há série",
            "cart": "a PD média da carteira no setor, ponderada pela EAD", "fix": "uma PD de referência única informada"}
 
 
@@ -294,13 +294,13 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     bl_txt = ""
     if len(base_bra):
         b = base_bra.groupby("ano")["baseline_pd_pp"].mean()
-        bl_txt = (f" Na série utilizada, a PD de linha de base do CLIMACRED para {p.fallback_country} é a mesma para todos os setores "
+        bl_txt = (f" Na série utilizada, a PD baseline do CLIMACRED para {p.fallback_country} é a mesma para todos os setores "
                   f"e varia entre {f3(b.min())}% e {f3(b.max())}% no período 2024–2030.")
 
     story = []
     A = story.append
-    A(Paragraph("Estresse climático em carteiras de crédito corporativo com os cenários de curto prazo do NGFS: "
-                "aplicação da ΔPD do modelo CLIMACRED", st["title"]))
+    A(Paragraph("Estresse climático em carteiras de crédito corporativo com a ΔPD do modelo CLIMACRED "
+                "nos cenários de curto prazo do NGFS", st["title"]))
     if author:
         A(Paragraph(author, st["author"]))
     if institution:
@@ -315,8 +315,9 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         f"crédito a pessoas jurídicas com {len(c)} contratos e exposição de {money(B['ead'])}. A variação da probabilidade de "
         f"inadimplência por setor (ΔPD) vem do modelo estrutural de crédito CLIMACRED, componente dos cenários de curto prazo do "
         f"<i>Network for Greening the Financial System</i> (NGFS) publicados em 2025, e é transferida a cada contrato por {metodo}. "
-        + ("O capital econômico é calculado por dois modelos: a fórmula ASRF do IRB, adotada pelo Banco Central do Brasil, e o "
-           "CreditRisk+, com calibragem parametrizável; em ambos, CEA = PE + PI. " if crp0 else "O capital é medido pela fórmula ASRF do IRB. ")
+        + ("O capital é calculado por dois modelos, a fórmula ASRF da abordagem IRB, adotada pelo Banco Central do Brasil para o capital "
+           "regulatório, e o CreditRisk+, com calibragem parametrizável, ambos apresentados na forma CEA = PE + PI. " if crp0 else
+           "O capital é medido pela fórmula ASRF da abordagem IRB. ")
         + f"Pelo {MLAB}, no cenário mais severo, {WM['sc']['nome']} ({YEARS[WM['yi']]}), a perda esperada aumenta {money(DWM['dpe'])} "
         f"e a perda inesperada {money(DWM['dpi'])}, "
         + (f"o equivalente a {impact(DWM['dtot'], pr, True)} considerado. " if has_pr(pr) else f"num total de {money(DWM['dtot'])}. ")
@@ -324,27 +325,27 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
            if crp0 else "")
         + f"O cenário mais brando, {bestm['sc']['nome']}, resulta em {impact(model_delta(out, bestm)['dtot'], pr)}. "
         "Os resultados são sensíveis à forma de transferir a ΔPD setorial ao contrato e à calibragem do modelo de capital, pontos discutidos "
-        f"em detalhe, e o procedimento é proposto como insumo ao programa de testes de estresse e ao ICAAP.", st["abs"]))
+        f"em detalhe ao longo do texto.", st["abs"]))
     A(Paragraph("<b>Palavras-chave:</b> risco climático; probabilidade de inadimplência; teste de estresse; NGFS; CLIMACRED; ICAAP.",
                 st["kw"]))
 
     # 1 Introdução
     A(Paragraph("1. Introdução", st["h1"]))
     A(Paragraph(
-        "A mudança climática afeta o sistema financeiro por dois canais: o risco físico, associado a eventos extremos e a alterações "
-        "graduais do clima, e o risco de transição, associado a mudanças de política, tecnologia e preferências rumo a uma economia de "
+        "A mudança climática afeta o sistema financeiro por dois canais. O risco físico está associado a eventos extremos e a alterações "
+        "graduais do clima, e o risco de transição está associado a mudanças de política, tecnologia e preferências rumo a uma economia de "
         "baixo carbono (CARNEY, 2015; BOLTON et al., 2020). Ambos se manifestam no crédito pela deterioração da capacidade de pagamento "
         "dos tomadores e pela perda de valor de seus ativos.", st["body"]))
     A(Paragraph(
         "No Brasil, a Resolução CMN n. 4.943/2021 alterou a Resolução CMN n. 4.557/2017 e incluiu o risco climático na estrutura de "
-        "gerenciamento de riscos; para instituições dos segmentos S1 e S2, o programa de testes de estresse passou a considerar hipóteses "
+        "gerenciamento de riscos. Para instituições dos segmentos S1 e S2, o programa de testes de estresse passou a considerar hipóteses "
         "de mudanças em padrões climáticos e de transição para uma economia de baixo carbono. O Banco Central tem publicado exercícios "
         "próprios de estresse climático em seus Relatórios de Estabilidade Financeira, cobrindo seca extrema, chuvas intensas, as "
         "enchentes do Rio Grande do Sul e o El Niño (BANCO CENTRAL DO BRASIL, 2022–2025).", st["body"]))
     A(Paragraph(
         "A lacuna prática é a passagem das variáveis de cenário para os parâmetros de risco de crédito. Os cenários de longo prazo do "
         "NGFS entregam trajetórias de PIB, preço de carbono e emissões, mas não probabilidades de inadimplência. Os cenários de curto "
-        "prazo, publicados em maio de 2025, avançam nesse ponto: incorporam o modelo CLIMACRED, que entrega diretamente a ΔPD por setor, "
+        "prazo, publicados em maio de 2025, avançam nesse ponto ao incorporar o modelo CLIMACRED, que entrega diretamente a ΔPD por setor, "
         "país e ano (NGFS, 2025; BATTISTON et al., 2025). Este relatório descreve como essa ΔPD é aplicada a uma carteira corporativa "
         "e apresenta o impacto resultante em perdas e capital.", st["body"]))
 
@@ -368,11 +369,11 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         "O CLIMACRED é um modelo de risco de crédito micro-fundamentado que avalia títulos de dívida e ações de firmas e o custo de "
         "capital condicionalmente a cenários climáticos (BATTISTON et al., 2023; MANDEL; BATTISTON; MONASTEROLO, 2025). Ele descende "
         "da linha de testes de estresse climático do sistema financeiro de Battiston et al. (2017). O modelo simula o balanço e o "
-        "resultado de uma firma representativa de cada setor e país. No risco de transição, os ativos são afetados por encalhe "
-        "(<i>stranding</i>) e a queda de produção reduz o fluxo de caixa; no risco físico, a destruição de capital produtivo reduz ativos "
+        "resultado de uma firma representativa de cada setor e país. No risco de transição, os ativos são afetados por "
+        "<i>stranding</i> e a queda de produção reduz o fluxo de caixa. No risco físico, a destruição de capital produtivo reduz ativos "
         "ou aumenta a dívida pela reconstrução, e a interrupção de negócios reduz o fluxo de caixa.", st["body"]))
     A(Paragraph(
-        "Dois elementos distinguem o modelo. Primeiro, o risco nasce da mudança de expectativas do mercado sobre o cenário: quando o "
+        "Dois elementos distinguem o modelo. Primeiro, o risco nasce da mudança de expectativas do mercado sobre o cenário, pois, quando o "
         "mercado passa a acreditar num cenário, ativos e fluxos de caixa futuros são reprecificados de imediato. Segundo, há duas "
         "fontes de incerteza, a ambiguidade sobre qual cenário prevalecerá e os choques de produtividade da firma dentro de cada "
         "cenário. A saída usada neste relatório é", st["body0"]))
@@ -383,14 +384,14 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
 
     A(Paragraph("2.3 Os cenários de curto prazo do NGFS", st["h2"]))
     A(Paragraph(
-        "Os cenários de curto prazo cobrem 2024–2030 e integram três modelos: o GEM-E3, de equilíbrio geral com 50 setores e 46 países; "
-        "o EIRIN, macrofinanceiro; e o CLIMACRED, de crédito. Os choques físicos combinam eventos simultâneos, como seca, onda de calor e "
+        "Os cenários de curto prazo cobrem 2024–2030 e integram três modelos, o GEM-E3, de equilíbrio geral com 50 setores e 46 países, "
+        "o EIRIN, macrofinanceiro, e o CLIMACRED, de crédito. Os choques físicos combinam eventos simultâneos, como seca, onda de calor e "
         "incêndio (eventos secos) ou enchente e tempestade (eventos úmidos), e se propagam entre regiões pelo comércio e pelo sistema "
         "financeiro (NGFS, 2025). A Tabela 1 resume os cenários com série para a carteira analisada.", st["body"]))
     desc = {
         "HWTP": "Transição ordenada e tecnológica; receita de carbono reinvestida em subsídios verdes.",
         "SWUC": "Mudança abrupta de preferências e de política climática; transição tardia e desordenada.",
-        "DIRE": "Economias avançadas fazem a transição; demais regiões sofrem desastres sucessivos (América do Sul: seco em 2026, úmido em 2029).",
+        "DIRE": "Economias avançadas fazem a transição; demais regiões sofrem desastres sucessivos (na América do Sul, seco em 2026 e úmido em 2029).",
         "DAPS_SAM": "Sem nova política climática; sequência de desastres na América do Sul (seco em 2026, úmido em 2027).",
         "DAPS_NAM": "Sem nova política climática; desastres na América do Norte (afeta só exposições na região).",
     }
@@ -402,7 +403,7 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     A(Paragraph(
         "Barón et al. (2026) aplicaram a ΔPD do CLIMACRED para a América do Sul à carteira corporativa dos bancos uruguaios, somando a "
         "ΔPD setorial à PD de base e medindo a perda esperada incremental como fração do capital regulatório. No cenário de desastres, "
-        "a PD do agronegócio passou de 2,620% para 28,390%. O presente relatório segue o mesmo encadeamento, com três diferenças: usa a "
+        "a PD do agronegócio passou de 2,620% para 28,390%. O presente relatório segue o mesmo encadeamento, mas usa a "
         "série específica do Brasil, transfere a ΔPD ao contrato por deslocamento da variável latente e mede também o capital para "
         "perdas inesperadas.", st["body"]))
 
@@ -410,13 +411,13 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     A(Paragraph(
         "O CreditRisk+ (CREDIT SUISSE FIRST BOSTON, 1997) é um modelo atuarial de perdas de carteira. Cada contrato <i>i</i> entra "
         "em inadimplência segundo uma Poisson de intensidade PD<sub>i</sub>, modulada por fatores de risco setoriais X<sub>k</sub> "
-        "independentes, com distribuição gama de média um. A dependência entre inadimplências surge apenas pelos fatores comuns:",
+        "independentes, com distribuição gama de média um. A dependência entre inadimplências surge apenas pelos fatores comuns,",
         st["body0"]))
     A(_eq(key="crp_poisson", number=3))
     A(Paragraph(
         "em que w<sub>i0</sub> é o peso idiossincrático e w<sub>ik</sub> o peso do fator <i>k</i>. Agrupando as perdas em múltiplos "
         "de uma unidade L<sub>0</sub>, com ν<sub>i</sub> = LGD<sub>i</sub>·EAD<sub>i</sub>/L<sub>0</sub> arredondado, a função "
-        "geradora de probabilidades da perda da carteira tem forma fechada:", st["body0"]))
+        "geradora de probabilidades da perda da carteira tem a forma fechada", st["body0"]))
     A(_eq(key="crp_pgf", number=4))
     A(Paragraph("com os parâmetros de cada fator dados por", st["body0"]))
     A(_eq(key="crp_par", number=5))
@@ -424,7 +425,7 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         "em que μ<sub>k</sub> é o número esperado de inadimplências do fator, σ<sub>k</sub> seu desvio-padrão e λ a volatilidade "
         "relativa (premissa de calibragem). A distribuição de perdas sai da expansão de G(z), pela recursão de Panjer ou, "
         "de forma equivalente e mais rápida, avaliando G na circunferência unitária com a transformada rápida de Fourier. O capital "
-        "econômico alocado é o quantil da perda no nível de confiança <i>q</i>, decomposto em perda esperada e perda inesperada:",
+        "econômico alocado é o quantil da perda no nível de confiança <i>q</i>, decomposto em perda esperada e perda inesperada,",
         st["body0"]))
     A(_eq(key="crp_cea", number=6))
     A(Paragraph(
@@ -436,7 +437,7 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     A(Paragraph("3. Metodologia", st["h1"]))
     A(Paragraph("3.1 Mapeamento setorial", st["h2"]))
     A(Paragraph(
-        "Cada contrato é associado a um setor do CLIMACRED a partir da classificação CNAE 2.0 do tomador: a classe de quatro dígitos tem "
+        "Cada contrato é associado a um setor do CLIMACRED a partir da classificação CNAE 2.0 do tomador. A classe de quatro dígitos tem "
         "precedência sobre a divisão de dois dígitos (por exemplo, as classes 1931 e 1932 vão para biocombustíveis), e um campo "
         "opcional permite indicar o setor diretamente, recurso útil para geradoras de energia, que o modelo distingue por fonte. "
         "Contratos sem série para o seu país recebem a série do país padrão; contratos sem setor mapeado não recebem choque.", st["body"]))
@@ -445,18 +446,18 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         "A ΔPD do CLIMACRED refere-se à firma representativa do setor. Duas formas de aplicá-la a um contrato <i>i</i> foram "
         "implementadas. A soma direta, coerente com o uso previsto pelos autores para a firma representativa, é", st["body0"]))
     A(_eq(key="add", number=7))
-    A(Paragraph("O deslocamento da variável latente converte a ΔPD em Δz a partir de uma PD de referência e aplica (1):", st["body0"]))
+    A(Paragraph("O deslocamento da variável latente converte a ΔPD em Δz a partir de uma PD de referência e o aplica pela expressão (1), com", st["body0"]))
     A(_eq(key="dz", number=8))
     A(Paragraph(
         "As duas formas coincidem quando a PD do contrato é igual à PD de referência. A soma direta atribui o mesmo acréscimo absoluto a "
-        "um contrato de rating A e a um de rating B; o deslocamento preserva a ordenação e gera multiplicadores maiores para PDs baixas. "
-        "A escolha da PD de referência importa: a PD de linha de base do CLIMACRED mede o choque na escala do próprio modelo, enquanto "
+        "um contrato de rating A e a um de rating B, enquanto o deslocamento preserva a ordenação e gera multiplicadores maiores para PDs "
+        "baixas. A PD de referência condiciona o resultado, já que a PD baseline do CLIMACRED mede o choque na escala do próprio modelo e "
         "a média da carteira o mede na escala das PDs de doze meses. Neste relatório, a aplicação adotada foi o " + metodo + ".",
         st["body0"]))
     A(Paragraph(
         "A <i>baseline_pd</i> do CLIMACRED não é uma PD de doze meses. Para trazer o choque ao horizonte anual, supõe-se carteira "
         "homogênea com intensidade de default constante no horizonte T do modelo, de modo que a PD acumulada em T anos corresponde a "
-        "uma PD anual π<sub>T</sub>(p). O deslocamento passa a ser medido entre as PDs anualizadas:", st["body0"]))
+        "uma PD anual π<sub>T</sub>(p). O deslocamento passa então a ser medido entre as PDs anualizadas,", st["body0"]))
     A(_eq(key="dz_h"))
     A(Paragraph(
         "Como π<sub>T</sub> comprime a escala, o Δz anualizado é menor que o da expressão (8) e o choque resultante é mais brando. "
@@ -464,8 +465,11 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
            "CLIMACRED." if p.mode == "dz" and p.horizon > 1 else
            "Neste relatório, o ajuste não foi aplicado (T = 1); ele fica disponível como análise de sensibilidade."),
         st["body"]))
-    A(Paragraph("3.3 Perdas e capital", st["h2"]))
-    A(Paragraph("A perda esperada e o capital econômico de cada contrato são", st["body0"]))
+    A(Paragraph("3.3 Perda esperada e capital pela abordagem IRB (modelo ASRF)", st["h2"]))
+    A(Paragraph(
+        "O primeiro modelo de capital é o adotado pela regulação para bancos autorizados a usar modelos internos. A perda esperada de "
+        "cada contrato e o fator de capital K da abordagem IRB, derivado do modelo de fator de risco único assintótico (ASRF), são",
+        st["body0"]))
     A(_eq(key="pe", number=9))
     A(_eq(key="k_irb", number=10))
     A(Paragraph("com correlação R<sub>i</sub> e ajuste de prazo b<sub>i</sub> dados por", st["body0"]))
@@ -473,10 +477,12 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     A(Paragraph(
         "A fórmula (10) é a função de ponderação de risco do IRB para exposições corporativas (BASEL COMMITTEE ON BANKING SUPERVISION, "
         "CRE31; GORDY, 2003), adotada pelo Banco Central do Brasil para o cálculo da parcela RWA<sub>CIRB</sub> (Resolução BCB n. 303/2023). "
-        "O capital ASRF do contrato, o RWA correspondente e o capital econômico da carteira na mesma lógica CEA = PE + PI são", st["body0"]))
+        "K cobre apenas a perda inesperada ao nível de confiança de 99,9%, com a perda esperada tratada à parte, por provisões. Neste "
+        "relatório, K·EAD é o capital do contrato pelo ASRF, 12,5 vezes esse valor é o RWA correspondente e a soma de PE e K·EAD forma o "
+        "capital econômico da carteira na mesma lógica CEA = PE + PI usada para o CreditRisk+,", st["body0"]))
     A(_eq(key="asrf_cap", number=12))
     A(Paragraph(
-        f"com fator de escala s = {f2(p.irb_scale)} e piso de PD de {pc(p.pd_floor)}; o prazo efetivo M fica entre um e cinco anos. "
+        f"com fator de escala s = {f2(p.irb_scale)}, piso de PD de {pc(p.pd_floor)} e prazo efetivo M limitado entre um e cinco anos. "
         "Como K já exclui a perda esperada, K·EAD é diretamente comparável à perda inesperada do CreditRisk+. Os impactos são as "
         "diferenças em relação à situação de base, avaliadas no ano de maior impacto de cada cenário"
         + ("" if p.year == "pico" else f" (aqui, no ano fixo de {p.year})")
@@ -484,9 +490,9 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         + ". O balanço é mantido estático.",
         st["body0"]))
     A(Paragraph(
-        "Contratos em estágio 3 (Resolução CMN n. 4.966/2021) já estão inadimplidos: a PD é 100% e não há choque de PD a aplicar. "
+        "Contratos em estágio 3 (Resolução CMN n. 4.966/2021) já estão inadimplidos, com PD de 100%, e por isso não recebem choque de PD. "
         "Para eles adota-se o tratamento de exposições em default do IRB, com a provisão constituída como estimativa de "
-        "EL<super>best</super> (ou LGD·EAD, na ausência de provisão):", st["body"]))
+        "EL<super>best</super> (ou LGD·EAD, na ausência de provisão), de modo que", st["body"]))
     A(_eq(key="k_def"))
     A(Paragraph(
         "No CreditRisk+, a perda dessas exposições é determinística, LGD·EAD, e apenas desloca a distribuição, sem alterar a perda "
@@ -499,20 +505,21 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         cpar = crp["params"]
         A(Paragraph("3.4 Calibragem do CreditRisk+", st["h2"]))
         A(Paragraph(
-            f"A calibragem é parametrizável. Neste relatório: nível de confiança de {pc(cpar.conf)}; "
+            f"A calibragem é parametrizável. Neste relatório, adotou-se nível de confiança de {pc(cpar.conf)}, "
             + ("um fator gama por setor do CLIMACRED, com cada contrato integralmente ligado ao fator do seu setor"
                if cpar.sectors == "climacred" else "um único fator sistêmico comum a todos os contratos")
-            + f"; peso idiossincrático w<sub>0</sub> = {f2(cpar.w0)}; volatilidade relativa da taxa de inadimplência "
-            f"σ<sub>k</sub>/μ<sub>k</sub> = {f2(cpar.vol_ratio)} na base e {f2(cpar.vol_ratio * cpar.stress_vol)} no estresse; e unidade de "
+            + f", peso idiossincrático w<sub>0</sub> = {f2(cpar.w0)}, volatilidade relativa da taxa de inadimplência "
+            f"σ<sub>k</sub>/μ<sub>k</sub> = {f2(cpar.vol_ratio)} na base e {f2(cpar.vol_ratio * cpar.stress_vol)} no estresse e unidade de "
             f"perda L<sub>0</sub> = {money(crp['L0'])}, correspondente a {cpar.bands_max} bandas para a maior exposição. A volatilidade "
-            "relativa é a principal premissa: ela controla a espessura da cauda e, portanto, a perda inesperada.", st["body"]))
+            "relativa é a principal premissa, porque controla a espessura da cauda e, portanto, a perda inesperada.", st["body"]))
 
     # 4 Dados
     A(Paragraph("4. Dados", st["h1"]))
     A(Paragraph(
         f"A carteira {'é fictícia, gerada para ilustração, e ' if cart_src == 'ex' else ''}contém {len(c)} contratos, com EAD de "
-        f"{money(B['ead'])}, PD média ponderada de {pc(B['pdw'])}, perda esperada de {money(B['pe'])} e capital "
-        f"econômico de {money(B['cap'])} na situação de base. A Figura 1 mostra a distribuição da exposição por setor. A ΔPD "
+        f"{money(B['ead'])}, PD média ponderada de {pc(B['pdw'])} e perda esperada de {money(B['pe'])} na situação de base. O capital "
+        f"para perdas inesperadas pela abordagem IRB (K·EAD, modelo ASRF) é de {money(B['cap'])}"
+        + (f" e, pelo CreditRisk+, de {money(crp['base']['pi'])}" if crp else "") + ". A Figura 1 mostra a distribuição da exposição por setor. A ΔPD "
         + ("é ilustrativa, ancorada em valores publicados e completada por premissas, e não deve ser usada para decisões."
            if ill else f"vem do arquivo {data.get('fonte')} (NGFS Phase 5 Short-Term, versão 1.1, IIASA)."), st["body"]))
     A(KeepTogether([_fig_to_image(_fig_sectors(out), 14.5),
@@ -523,19 +530,19 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     A(Paragraph(
         f"A Tabela 2 consolida o resultado por cenário. O cenário mais severo é {W['sc']['nome']}, em {YEARS[W['yi']]}, com PD média "
         f"ponderada de {pc(W['ev']['pd_media'])} e impacto total de {impact(W['ev']['dtot'], pr)}. A Figura 2 decompõe esse impacto "
-        "entre perda esperada e capital, e a Figura 3 mostra a trajetória anual da perda esperada incremental: os cenários de "
+        "entre perda esperada e capital ASRF, e a Figura 3 mostra a trajetória anual da perda esperada incremental, em que os cenários de "
         "transição acumulam efeito ao longo do tempo, enquanto os cenários físicos produzem picos concentrados nos anos dos eventos.",
         st["body"]))
     g = _mb
-    rows = [["Linha de base", "–", pc(B["pdw"]), g(B["pe"]), "–", g(B["cap"]), "–", "–"]]
+    rows = [["Base", "–", pc(B["pdw"]), g(B["pe"]), "–", g(B["cap"]), "–", "–"]]
     rows += [[r["sc"]["nome"], str(YEARS[r["yi"]]), pc(r["ev"]["pd_media"]), g(r["ev"]["pe"]), g(r["ev"]["dpe"]), g(r["ev"]["cap"]),
               g(r["ev"]["dcap"]), impact(r["ev"]["dtot"], pr).replace(" do PR", "")] for r in R]
-    A(KeepTogether([_caption(st, "<b>Tabela 2.</b> Perda esperada e capital econômico por cenário (R$; mi = milhões, bi = bilhões), no ano de avaliação."),
-                    _table(rows, ["Cenário", "Ano", "PD média", "PE", "Δ PE", "Capital", "Δ capital", "Δ total % PR" if has_pr(pr) else "Δ total"],
+    A(KeepTogether([_caption(st, "<b>Tabela 2.</b> Perda esperada e capital ASRF/IRB (K·EAD) por cenário (R$; mi = milhões, bi = bilhões), no ano de avaliação."),
+                    _table(rows, ["Cenário", "Ano", "PD média", "PE", "Δ PE", "K·EAD", "Δ K·EAD", "Δ total % PR" if has_pr(pr) else "Δ total"],
                            [4.4, 1.0, 1.6, 1.6, 1.6, 1.8, 1.7, 2.0], st, align_right_from=1)]))
     A(KeepTogether([_fig_to_image(_fig_bars(out), 14.5),
-                    _caption(st, f"<b>Figura 2.</b> Impacto incremental {'em % do Patrimônio de Referência' if has_pr(pr) else 'em R$'}: perda esperada (cinza) e "
-                                 "capital econômico (hachurado).")]))
+                    _caption(st, f"<b>Figura 2.</b> Impacto incremental {'em % do Patrimônio de Referência' if has_pr(pr) else 'em R$'}, com a perda esperada em cinza e "
+                                 "o capital ASRF/IRB (K·EAD) hachurado.")]))
     A(KeepTogether([_fig_to_image(_fig_trajectory(out), 14.5),
                     _caption(st, "<b>Figura 3.</b> Perda esperada incremental por ano e cenário.")]))
 
@@ -587,7 +594,7 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         crow = [["Base", "–", _mb(cb["pe"]), _mb(cb["pi"]), _mb(cb["cea"]), "–"]]
         crow += [[r["sc"]["nome"], str(YEARS[r["yi"]]), _mb(crp["cen"][r["sc"]["id"]]["pe"]), _mb(crp["cen"][r["sc"]["id"]]["pi"]),
                   _mb(crp["cen"][r["sc"]["id"]]["cea"]), _mb(crp["cen"][r["sc"]["id"]]["cea"] - cb["cea"])] for r in R]
-        A(KeepTogether([_caption(st, f"<b>Tabela 6.</b> CreditRisk+: CEA = PE + PI na base e em cada cenário (confiança de {pc(cpar.conf)})."),
+        A(KeepTogether([_caption(st, f"<b>Tabela 6.</b> CEA = PE + PI pelo CreditRisk+ na base e em cada cenário (confiança de {pc(cpar.conf)})."),
                         _table(crow, ["Cenário", "Ano", "PE", "PI", "CEA", "Δ CEA"], [6.0, 1.2, 2.2, 2.2, 2.2, 2.2], st, align_right_from=1)]))
         A(KeepTogether([_fig_to_image(fig_capital(crp, wid["sc"]["id"], f"{wid['sc']['nome']} ({YEARS[wid['yi']]})"), 14.5),
                         _caption(st, f"<b>Figura 4.</b> Distribuição de perdas da carteira pelo CreditRisk+, na base e em "
@@ -600,7 +607,9 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         A(Paragraph("5.2 Comparação dos modelos de capital", st["h2"]))
         cc = capital_compare(out)
         A(Paragraph(
-            "A Tabela 7 reúne os dois capitais na mesma lógica CEA = PE + PI. A perda esperada é a mesma; a perda inesperada difere "
+            "A Tabela 7 reúne os dois capitais na mesma lógica CEA = PE + PI. A perda esperada dos contratos adimplentes é a mesma nos dois "
+            "modelos (a coluna PE mostra a do ASRF, e no CreditRisk+ os contratos em estágio 3 entram com LGD·EAD integral), e a perda "
+            "inesperada difere "
             "porque o ASRF soma o capital de cada contrato com correlação regulatória entre 12% e 24% e ajuste de prazo, supondo carteira "
             "infinitamente granular, enquanto o CreditRisk+ obtém a distribuição de perdas da carteira em horizonte de um ano, com "
             "dependência dada pela volatilidade dos fatores setoriais e com efeito de concentração. "
@@ -614,11 +623,11 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     # 6 Discussão
     A(Paragraph("6. Discussão e limitações", st["h1"]))
     A(Paragraph(
-        "O ponto metodológico central é a escala. A ΔPD do CLIMACRED é medida sobre a PD de linha de base do próprio modelo, cujo nível "
+        "O ponto metodológico central é a escala. A ΔPD do CLIMACRED é medida sobre a PD baseline do próprio modelo, cujo nível "
         "é muito superior ao de uma PD de doze meses de carteira corporativa. Somar a ΔPD diretamente a PDs de doze meses, como em "
         "Barón et al. (2026), mistura as duas escalas e tende a produzir choques mais severos, sobretudo para bons ratings. A conversão "
-        "em Δz sobre a PD de linha de base do CLIMACRED mede o choque na escala do modelo e o transfere à escala da carteira, "
-        "preservando a ordenação de risco. A escolha deve ser documentada como premissa e acompanhada da comparação da Tabela 4.",
+        "em Δz sobre a PD baseline do CLIMACRED mede o choque na escala do modelo e o transfere à escala da carteira, "
+        "preservando a ordenação de risco. A escolha é incorporada como premissa e acompanhada da comparação da Tabela 4.",
         st["body"]))
     A(Paragraph(
         "Outras limitações merecem registro. O balanço é estático e não há reação de originação, repactuação ou cobertura. A LGD é "
@@ -627,22 +636,16 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         "garantias governamentais nem programas de apoio, como seguro rural e Proagro, que no Brasil podem mitigar perdas de forma "
         "relevante. Por fim, a ΔPD reflete a reprecificação por mudança de expectativas, e não uma taxa de inadimplência observada, o que "
         "dificulta o confronto direto com eventos históricos.", st["body"]))
-    A(Paragraph(
-        "Para uso no ICAAP, recomenda-se: tratar o capital ASRF como capital econômico, pois na abordagem padronizada o RWA de crédito não "
-        "reage à PD; levar a perda esperada incremental às provisões e à migração de estágios previstas na Resolução CMN n. 4.966/2021; "
-        "somar o Δz climático ao do cenário macroeconômico adverso; e submeter as premissas à validação independente, com análise de "
-        "sensibilidade e comparação com os exercícios do Banco Central.", st["body"]))
 
     # 7 Conclusão
     A(Paragraph("7. Conclusão", st["h1"]))
     A(Paragraph(
-        f"Os cenários de curto prazo do NGFS permitem, pela primeira vez, um teste de estresse climático de crédito com PD condicional "
+        f"Os cenários de curto prazo do NGFS permitem um teste de estresse climático de crédito com PD condicional "
         f"ao cenário publicada por setor e país. Aplicada à carteira analisada, a ΔPD do CLIMACRED eleva o capital econômico pelo "
         f"{MLAB} entre {impact(model_delta(out, bestm)['dtot'], pr).replace(' do PR', '')} e {impact(DWM['dtot'], pr, True)}, com "
         "predominância dos cenários físicos no curto prazo e dos de transição ao fim do horizonte. "
-        + ("Os dois modelos de capital divergem de forma relevante: o ASRF, contrato a contrato e com ajuste de prazo, e o CreditRisk+, "
-           "que capta concentração. A divergência é informação útil para o ICAAP e deve ser explicada, e não escolhida. " if crp0 else "")
-        + "A magnitude depende ainda da transferência da ΔPD ao contrato, que deve ser tratada como premissa explícita do exercício.",
+        + ("Os dois modelos de capital divergem de forma relevante, com o ASRF calculado contrato a contrato e com ajuste de prazo e o "
+           "CreditRisk+ captando a concentração da carteira." if crp0 else ""),
         st["body"]))
 
     A(PageBreak())
@@ -666,8 +669,8 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         per, ev, yr = r["per"], r["ev"], YEARS[r["yi"]]
         A(Paragraph(f"A.{n_} {r['sc']['nome']} – {yr}", st["h2"]))
         A(Paragraph(
-            f"Natureza: {(lambda t: t[:1].lower() + t[1:] if t else 'não classificada')(r['sc'].get('tipo', ''))}. Ano de avaliação: {yr}"
-            + (" (ano de maior impacto do cenário)" if p.year == "pico" else "") + ". "
+            f"Cenário de natureza {(lambda t: t[:1].lower() + t[1:] if t else 'não classificada')(r['sc'].get('tipo', ''))}, avaliado em {yr}"
+            + (", ano de maior impacto do cenário" if p.year == "pico" else "") + ". "
             + (f"Aplicação por deslocamento Δz, com referência em {REF_TXT.get(r.get('ref_used'), 'PD de referência')}."
                if p.mode == "dz" else "Aplicação por soma direta da ΔPD à PD de cada contrato."), st["body0"]))
         srows = []

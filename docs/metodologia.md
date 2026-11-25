@@ -2,11 +2,11 @@
 
 Os cenários de curto prazo do NGFS (primeira safra, maio de 2025) combinam três modelos: **GEM-E3** (economia e setores), **EIRIN** (macrofinanceiro) e **CLIMACRED** (crédito). O CLIMACRED é um modelo estrutural de firma: o default ocorre quando o valor dos ativos fica abaixo das dívidas, e a mudança de expectativa do mercado sobre o cenário reprecifica ativos e fluxos de caixa. A saída é
 
-ΔPD = PD(cenário) − PD(linha de base), em pontos percentuais, por setor, país e ano (2024–2030).
+ΔPD = PD(cenário) − PD(baseline), em pontos percentuais, por setor, país e ano (2024–2030).
 
-No arquivo do IIASA (`CLIMACRED_IIASA_2025_07_02.xlsx`, versão 1.1) as variáveis são `pd_adjustment|<setor>` (ΔPD, "abs. change in value with respect to BAU in percentage points") e `baseline_pd|<setor>` (PD de linha de base, "value/level in percentage points"), para 50 setores e 53 regiões. O Brasil (`Brazil - BRA`) tem série própria em quatro cenários: HWTP (Highway to Paris), SWUC (Sudden Wake-Up Call), DIRE (Diverging Realities) e DAPS_SAM (Disasters and Policy Stagnation com eventos na América do Sul). As demais versões do DAPS não trazem o Brasil.
+No arquivo do IIASA (`CLIMACRED_IIASA_2025_07_02.xlsx`, versão 1.1) as variáveis são `pd_adjustment|<setor>` (ΔPD, "abs. change in value with respect to BAU in percentage points") e `baseline_pd|<setor>` (PD baseline, "value/level in percentage points"), para 50 setores e 53 regiões. O Brasil (`Brazil - BRA`) tem série própria em quatro cenários: HWTP (Highway to Paris), SWUC (Sudden Wake-Up Call), DIRE (Diverging Realities) e DAPS_SAM (Disasters and Policy Stagnation com eventos na América do Sul). As demais versões do DAPS não trazem o Brasil.
 
-A PD de linha de base do CLIMACRED para o Brasil é a mesma em todos os setores e fica entre 35% e 45% ao longo de 2024–2030. Esse nível é muito superior a uma PD de 12 meses de carteira corporativa, o que indica uma escala própria do modelo estrutural; por isso a soma direta da ΔPD a PDs de 12 meses mistura escalas.
+A PD baseline do CLIMACRED para o Brasil é a mesma em todos os setores e fica entre 35% e 45% ao longo de 2024–2030. Esse nível é muito superior a uma PD de 12 meses de carteira corporativa, o que indica uma escala própria do modelo estrutural; por isso a soma direta da ΔPD a PDs de 12 meses mistura escalas.
 
 ### Aplicação ao contrato
 
