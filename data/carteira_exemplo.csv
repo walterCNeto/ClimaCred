@@ -1,161 +1,161 @@
-id_contrato,cliente,cnae,setor_ngfs,pais,uf,rating,pd_12m,lgd,ead,prazo_anos,provisao
-C0001,"Construtora Serra Azul S.A.",41,,Brasil,RS,BB,0.01234,0.45,46.563,3,0.316
-C0002,"Agropecuária Aurora S.A.",01,,Brasil,MS,BB,0.013248,0.45,85.002,3,0.718
-C0003,"Cimentos Paulista S.A.",23,,Brasil,PE,A,0.001349,0.35,140.17,4,0.101
-C0004,"Autopeças Paulista S.A.",29,,Brasil,RJ,AA,0.000486,0.45,111.798,4,0.034
-C0005,"Papel e Celulose Pampa S.A.",17,,Brasil,RJ,BB,0.012839,0.45,57.924,5,0.443
-C0006,"Alimentos Atlântico S.A.",10,,Brasil,SP,BBB,0.003895,0.45,281.409,1,0.537
-C0007,"Carbonífera Paulista S.A.",05,,Brasil,PE,BBB,0.00348,0.45,62.263,5,0.114
-C0008,"Linhas Aéreas Aurora S.A.",51,,Brasil,RS,BB,0.012166,0.45,78.541,5,0.405
-C0009,"Agropecuária Alfa S.A.",01,,Brasil,MT,BB,0.013198,0.45,132.441,2,1.207
-C0010,"Alimentos do Cerrado S.A.",10,,Brasil,RJ,AA,0.000564,0.45,65.784,1,0.013
-C0011,"Varejo Boa Vista S.A.",47,,Brasil,MG,B,0.036045,0.35,27.893,1,0.446
-C0012,"Transportes do Cerrado S.A.",49,,Brasil,PR,BBB,0.003998,0.45,120.626,4,0.268
-C0013,"Siderúrgica Atlântico S.A.",24,,Brasil,RJ,B,0.035283,0.45,43.699,3,0.795
-C0014,"Refinaria Santa Clara S.A.",19,,Brasil,SP,BBB,0.004353,0.45,274.411,5,0.682
-C0015,"Construtora Alfa S.A.",41,,Brasil,PR,AA,0.000531,0.45,39.241,2.5,0.008
-C0016,"Autopeças Paulista S.A.",29,,Brasil,SP,BBB,0.00425,0.45,87.801,4,0.232
-C0017,"Logística Paulista S.A.",52,,Brasil,SP,BB,0.011598,0.45,92.931,2.5,0.741
-C0018,"Empreendimentos Atlântico S.A.",68,,Brasil,SP,B,0.032287,0.45,115.476,4,2.54
-C0019,"Energia Horizonte S.A.",35,,Brasil,SP,B,0.033604,0.45,37.348,1,0.788
-C0020,"Navegação Litoral S.A.",50,,Brasil,PR,B,0.040302,0.45,50.099,3,1.149
-C0021,"Alimentos Nova Era S.A.",10,,Brasil,SP,BBB,0.004398,0.45,68.994,5,0.218
-C0022,"Varejo Central S.A.",47,,Brasil,SP,BB,0.011221,0.45,38.679,1,0.249
-C0023,"Logística do Cerrado S.A.",52,,Brasil,MG,B,0.034141,0.45,388.664,3,8.922
-C0024,"Petróleo Vale Verde S.A.",06,,Brasil,MG,AA,0.000489,0.45,184.799,1,0.063
-C0025,"Transportes Litoral S.A.",49,,Estados Unidos,SP,BB,0.013736,0.45,32.417,2,0.222
-C0026,"Energia Central S.A.",35,,Brasil,MG,B,0.032116,0.45,25.564,5,0.46
-C0027,"Agropecuária Central S.A.",01,,Brasil,MT,B,0.031493,0.45,14.032,3,0.22
-C0028,"Agropecuária Ipê S.A.",01,,Brasil,MT,BBB,0.003902,0.45,87.892,2.5,0.132
-C0029,"Siderúrgica Aurora S.A.",24,,Brasil,SP,BB,0.013415,0.35,179.051,1,0.906
-C0030,"Alimentos Atlântico S.A.",10,,Brasil,SP,BBB,0.004561,0.45,84.933,5,0.204
-C0031,"Linhas Aéreas Horizonte S.A.",51,,Brasil,MG,BB,0.013136,0.45,100.439,4,0.851
-C0032,"Agropecuária Aurora S.A.",01,,Brasil,MT,A,0.001437,0.45,89.478,2.5,0.08
-C0033,"Varejo Serra Azul S.A.",47,,Brasil,SP,B,0.035373,0.45,18.359,4,0.37
-C0034,"Empreendimentos do Cerrado S.A.",68,,Brasil,SP,BBB,0.003549,0.45,41.262,3,0.094
-C0035,"Refinaria Serra Azul S.A.",19,,Brasil,SP,A,0.001354,0.35,274.881,4,0.133
-C0036,"Linhas Aéreas Litoral S.A.",51,,Brasil,SP,CCC,0.1373,0.45,80.452,1,5.853
-C0037,"Mineração Aurora S.A.",07,,Brasil,SP,B,0.035899,0.35,42.079,3,0.697
-C0038,"Hospital Boa Vista S.A.",86,,Brasil,SP,BB,0.010576,0.45,62.825,5,0.339
-C0039,"Agropecuária Boa Vista S.A.",01,,Brasil,RS,BBB,0.004273,0.45,59.33,2,0.153
-C0040,"Cimentos Boa Vista S.A.",23,,Brasil,MG,A,0.001453,0.45,30.391,2.5,0.022
-C0041,"Petróleo Aurora S.A.",06,,Argentina,SP,BB,0.011923,0.45,307.888,3,2.612
-C0042,"Construtora Central S.A.",41,,Brasil,SP,BB,0.013628,0.45,15.62,5,0.082
-C0043,"Transportes Aurora S.A.",49,,Brasil,PE,A,0.001511,0.45,48.384,2.5,0.05
-C0044,"Distribuidora Ipê S.A.",46,,Brasil,SP,BBB,0.004144,0.45,90.106,1,0.258
-C0045,"Petróleo Paulista S.A.",06,,Brasil,SP,A,0.001482,0.45,275.066,5,0.261
-C0046,"Alimentos Litoral S.A.",10,,Brasil,MG,BBB,0.004541,0.45,232.474,4,0.646
-C0047,"Distribuidora Santa Clara S.A.",46,,Brasil,RJ,BBB,0.004494,0.45,27.047,2.5,0.087
-C0048,"Varejo Ipê S.A.",47,,Brasil,SP,BBB,0.00401,0.45,102.38,4,0.22
-C0049,"Empreendimentos Santa Clara S.A.",68,,Brasil,SP,A,0.001632,0.45,110.415,5,0.105
-C0050,"Petróleo do Cerrado S.A.",06,,Brasil,PR,BBB,0.003918,0.35,133.401,2,0.147
-C0051,"Sistemas Alfa S.A.",62,,Brasil,SP,AA,0.000524,0.45,56.828,4,0.012
-C0052,"Construtora do Cerrado S.A.",41,,Brasil,PR,B,0.033704,0.35,92.63,3,1.163
-C0053,"Empreendimentos Alfa S.A.",68,,Brasil,RJ,B,0.036744,0.35,20.359,2.5,0.235
-C0054,"Transportes Alfa S.A.",49,,Brasil,SP,CCC,0.104364,0.45,19.047,5,1.263
-C0055,"Varejo do Cerrado S.A.",47,,Brasil,MG,BBB,0.00454,0.45,30.574,2.5,0.052
-C0056,"Transportes Santa Clara S.A.",49,,Brasil,SP,B,0.031784,0.35,24.697,5,0.408
-C0057,"Siderúrgica Boa Vista S.A.",24,,Brasil,MG,BB,0.010755,0.35,134.491,2.5,0.432
-C0058,"Distribuidora Paulista S.A.",46,,Brasil,SP,BBB,0.004437,0.35,21.334,3,0.043
-C0059,"Varejo Central S.A.",47,,Brasil,SP,BBB,0.003858,0.45,49.556,5,0.114
-C0060,"Agropecuária Horizonte S.A.",01,,Brasil,MT,CCC,0.104513,0.45,28.099,4,2.025
-C0061,"Distribuidora Central S.A.",46,,Brasil,MG,A,0.001587,0.45,136.518,2,0.105
-C0062,"Agropecuária Aurora S.A.",01,,Brasil,RS,BB,0.013017,0.45,28.099,4,0.167
-C0063,"Energia Vale Verde S.A.",35,,Chile,MG,BBB,0.004564,0.45,10.685,5,0.033
-C0064,"Alimentos do Cerrado S.A.",10,,Brasil,SP,AA,0.000458,0.45,41.717,2,0.009
-C0065,"Agropecuária Aurora S.A.",01,,Brasil,MT,BB,0.010661,0.45,23.738,5,0.181
-C0066,"Transportes Ipê S.A.",49,,Estados Unidos,RJ,BBB,0.004262,0.45,49.144,2.5,0.115
-C0067,"Construtora do Cerrado S.A.",41,,Brasil,SP,BB,0.012074,0.45,38.675,3,0.201
-C0068,"Mineração Central S.A.",07,,Chile,PR,BB,0.010913,0.45,43.045,1,0.276
-C0069,"Transportes Serra Azul S.A.",49,,Chile,SP,BB,0.011255,0.45,18.937,3,0.139
-C0070,"Refinaria Pampa S.A.",19,,Brasil,MG,BBB,0.003762,0.35,73.503,5,0.15
-C0071,"Florestal Vale Verde S.A.",02,,Brasil,GO,B,0.038815,0.45,107.111,2.5,2.207
-C0072,"Autopeças Pampa S.A.",29,,Brasil,MG,A,0.001295,0.35,126.505,3,0.046
-C0073,"Química do Cerrado S.A.",20,,Brasil,SP,B,0.035179,0.45,46.795,4,0.96
-C0074,"Distribuidora Ipê S.A.",46,,Brasil,MG,B,0.034024,0.45,32.214,4,0.757
-C0075,"Petróleo Ipê S.A.",06,,Brasil,PE,A,0.001538,0.45,153.541,3,0.133
-C0076,"Petróleo Santa Clara S.A.",06,,Brasil,SP,A,0.001583,0.45,19.399,2.5,0.014
-C0077,"Linhas Aéreas do Cerrado S.A.",51,,Brasil,PR,BBB,0.003924,0.45,19.023,3,0.045
-C0078,"Agropecuária Alfa S.A.",01,,Brasil,PR,BBB,0.004634,0.35,90.551,2,0.119
-C0079,"Navegação Santa Clara S.A.",50,,Brasil,RJ,B,0.033906,0.45,37.984,3,0.76
-C0080,"Mineração Litoral S.A.",07,,Brasil,MG,BB,0.011552,0.45,15.014,2.5,0.075
-C0081,"Energia Vale Verde S.A.",35,,Brasil,MG,A,0.001483,0.35,52.221,1,0.043
-C0082,"Química Pampa S.A.",20,,Brasil,SP,BBB,0.00451,0.35,25.827,3,0.046
-C0083,"Papel e Celulose Atlântico S.A.",17,,Chile,RJ,BBB,0.004133,0.35,51.402,4,0.091
-C0084,"Florestal Paulista S.A.",02,,Brasil,MT,BBB,0.004487,0.45,29.87,1,0.075
-C0085,"Mineração Nova Era S.A.",07,,Brasil,PR,BBB,0.004005,0.35,100.895,3,0.126
-C0086,"Florestal Boa Vista S.A.",02,,Brasil,RS,BB,0.01168,0.45,95.668,3,0.768
-C0087,"Alimentos Pampa S.A.",10,,Brasil,RJ,A,0.001422,0.45,87.909,4,0.068
-C0088,"Hospital Horizonte S.A.",86,,Brasil,PR,BBB,0.003642,0.35,61.577,3,0.111
-C0089,"Agropecuária Boa Vista S.A.",01,,Brasil,GO,BB,0.010593,0.35,26.112,2,0.104
-C0090,"Energia Serra Azul S.A.",35,,Brasil,RJ,A,0.00171,0.35,673.565,2,0.603
-C0091,"Energia Paulista S.A.",35,,Brasil,MG,BB,0.011627,0.35,380.013,2.5,2.119
-C0092,"Sistemas Alfa S.A.",62,,Brasil,RJ,BB,0.012048,0.45,20.572,3,0.142
-C0093,"Agropecuária Paulista S.A.",01,,Brasil,GO,CCC,0.120918,0.45,99.836,2,5.031
-C0094,"Hospital Aurora S.A.",86,,Brasil,SP,BB,0.010602,0.45,81.313,5,0.44
-C0095,"Construtora Ipê S.A.",41,,Brasil,MG,BB,0.013161,0.35,42.407,5,0.274
-C0096,"Distribuidora Ipê S.A.",46,,Brasil,RJ,BB,0.013066,0.35,33.95,1,0.216
-C0097,"Autopeças do Cerrado S.A.",29,,Brasil,SP,BBB,0.0035,0.45,17.404,3,0.023
-C0098,"Siderúrgica Pampa S.A.",24,,Brasil,SP,BBB,0.003712,0.45,61.41,2,0.154
-C0099,"Linhas Aéreas Santa Clara S.A.",51,,Brasil,SP,BB,0.012515,0.45,107.135,3,0.92
-C0100,"Construtora Nova Era S.A.",41,,Brasil,RJ,BBB,0.003719,0.45,85.803,5,0.181
-C0101,"Autopeças Nova Era S.A.",29,,Brasil,RJ,CCC,0.124558,0.35,15.172,2,0.839
-C0102,"Cimentos Pampa S.A.",23,,Brasil,SP,B,0.036679,0.45,17.554,3,0.387
-C0103,"Transportes Aurora S.A.",49,,Brasil,SP,BBB,0.003716,0.35,35.494,5,0.062
-C0104,"Agropecuária Ipê S.A.",01,,Brasil,GO,BBB,0.004625,0.45,44.47,4,0.117
-C0105,"Sistemas Atlântico S.A.",62,,Brasil,RJ,A,0.001301,0.45,10.951,1,0.008
-C0106,"Construtora Pampa S.A.",41,,Brasil,SP,CCC,0.114611,0.45,68.431,2,4.537
-C0107,"Distribuidora Ipê S.A.",46,,Brasil,RJ,AA,0.000445,0.45,28.326,2.5,0.007
-C0108,"Logística Horizonte S.A.",52,,Brasil,RJ,BB,0.011545,0.45,37.066,1,0.244
-C0109,"Refinaria Aurora S.A.",19,,Brasil,SP,AA,0.000499,0.45,71.015,2,0.019
-C0110,"Energia Horizonte S.A.",35,,Argentina,SP,BBB,0.003849,0.35,41.017,4,0.045
-C0111,"Transportes Boa Vista S.A.",49,,Brasil,SP,BB,0.011269,0.45,131.77,5,0.806
-C0112,"Varejo Atlântico S.A.",47,,Brasil,PE,A,0.00151,0.45,33.152,4,0.024
-C0113,"Hospital Aurora S.A.",86,,Argentina,SP,BBB,0.004229,0.45,70.359,5,0.151
-C0114,"Construtora Litoral S.A.",41,,Brasil,PR,BBB,0.004505,0.35,23.667,1,0.059
-C0115,"Alimentos Serra Azul S.A.",10,,Brasil,SP,A,0.001715,0.45,8.228,4,0.008
-C0116,"Agropecuária Atlântico S.A.",01,,Brasil,RS,B,0.038559,0.45,74.996,5,1.908
-C0117,"Energia Aurora S.A.",35,,Brasil,RJ,BB,0.010585,0.45,53.401,5,0.219
-C0118,"Energia Paulista S.A.",35,,Brasil,PR,BBB,0.004193,0.45,269.69,2.5,0.71
-C0119,"Empreendimentos Paulista S.A.",68,,Brasil,RJ,B,0.037824,0.45,308.291,2.5,6.024
-C0120,"Petróleo Santa Clara S.A.",06,,Brasil,SP,BB,0.010915,0.45,14.323,3,0.061
-C0121,"Autopeças Aurora S.A.",29,,Brasil,PR,A,0.001533,0.45,16.414,1,0.014
-C0122,"Mineração Central S.A.",07,,Argentina,RJ,A,0.001432,0.45,38.637,5,0.021
-C0123,"Energia do Cerrado S.A.",35,,Brasil,SP,BBB,0.004405,0.45,69.85,2,0.129
-C0124,"Cimentos Atlântico S.A.",23,,Brasil,SP,B,0.036299,0.45,29.127,2.5,0.618
-C0125,"Alimentos Ipê S.A.",10,,Brasil,SP,A,0.001341,0.45,453.95,1,0.301
-C0126,"Alimentos Vale Verde S.A.",10,,Brasil,RJ,B,0.040319,0.35,89.236,5,1.594
-C0127,"Construtora Nova Era S.A.",41,,Brasil,SP,A,0.001586,0.45,118.961,3,0.075
-C0128,"Varejo do Cerrado S.A.",47,,Brasil,PR,BBB,0.004135,0.45,55.757,4,0.139
-C0129,"Agropecuária Horizonte S.A.",01,,Brasil,PR,BB,0.011458,0.45,71.204,3,0.53
-C0130,"Distribuidora Atlântico S.A.",46,,Brasil,SP,BBB,0.003847,0.45,205.371,4,0.288
-C0131,"Logística Aurora S.A.",52,,Brasil,RJ,A,0.001538,0.45,50.988,4,0.043
-C0132,"Logística Boa Vista S.A.",52,,Brasil,SP,BB,0.012824,0.45,97.2,3,0.802
-C0133,"Agropecuária Boa Vista S.A.",01,,Brasil,MT,B,0.037097,0.35,23.291,5,0.327
-C0134,"Siderúrgica Santa Clara S.A.",24,,Brasil,RS,A,0.001665,0.45,63.169,5,0.045
-C0135,"Florestal Alfa S.A.",02,,Brasil,PR,CCC,0.109752,0.45,14.904,1,1.091
-C0136,"Papel e Celulose Serra Azul S.A.",17,,Brasil,SP,BB,0.011674,0.35,91.168,3,0.561
-C0137,"Siderúrgica Horizonte S.A.",24,,Brasil,SP,BBB,0.00376,0.45,54.973,3,0.099
-C0138,"Distribuidora Aurora S.A.",46,,Brasil,SP,BBB,0.003658,0.45,51.301,2,0.091
-C0139,"Empreendimentos Litoral S.A.",68,,Brasil,PR,CCC,0.118003,0.45,27.511,5,1.686
-C0140,"Varejo Pampa S.A.",47,,Argentina,MG,BBB,0.004211,0.45,34.449,5,0.054
-C0141,"Varejo Paulista S.A.",47,,Brasil,RJ,BBB,0.004577,0.35,82.141,1,0.138
-C0142,"Transportes Serra Azul S.A.",49,,Brasil,PR,BBB,0.004301,0.45,81.058,5,0.151
-C0143,"Varejo Horizonte S.A.",47,,Brasil,MG,BB,0.013446,0.45,62.841,5,0.351
-C0144,"Cimentos Central S.A.",23,,Brasil,PR,BB,0.010604,0.35,4.58,2,0.015
-C0145,"Alimentos Boa Vista S.A.",10,,Brasil,MG,BB,0.011762,0.45,183.199,2,1.394
-C0146,"Alimentos Alfa S.A.",10,,Brasil,SP,BBB,0.003902,0.45,121.19,4,0.266
-C0147,"Química do Cerrado S.A.",20,,Brasil,SP,BBB,0.004245,0.35,55.169,4,0.128
-C0148,"Construtora Horizonte S.A.",41,,Brasil,SP,BBB,0.00378,0.45,90.826,3,0.207
-C0149,"Florestal Ipê S.A.",02,,Brasil,PR,A,0.001552,0.45,80.628,1,0.046
-C0150,"Mineração Atlântico S.A.",07,,Brasil,SP,BBB,0.004246,0.45,34.221,1,0.071
-C0151,"Construtora Vale Verde S.A.",41,,Brasil,SP,AA,0.000545,0.45,10.308,5,0.003
-C0152,"Mineração Vale Verde S.A.",07,,Brasil,RJ,AA,0.000511,0.45,46.844,2.5,0.015
-C0153,"Refinaria Alfa S.A.",19,,Brasil,SP,BBB,0.003944,0.45,88.527,2.5,0.132
-C0154,"Transportes Boa Vista S.A.",49,,Brasil,MG,A,0.001336,0.45,86.897,1,0.074
-C0155,"Alimentos Paulista S.A.",10,,Brasil,SP,BB,0.010345,0.45,34.453,1,0.14
-C0156,"Construtora do Cerrado S.A.",41,,Brasil,SP,A,0.001596,0.45,51.087,4,0.042
-C0157,"Petróleo Horizonte S.A.",06,,Brasil,RJ,BB,0.010558,0.45,24.326,5,0.143
-C0158,"Logística Central S.A.",52,,Brasil,MG,A,0.001502,0.45,35.08,2,0.029
-C0159,"Construtora Serra Azul S.A.",41,,Brasil,SP,AA,0.000515,0.45,78.236,1,0.017
-C0160,"Hospital Ipê S.A.",86,,Brasil,SP,BBB,0.003593,0.45,57.628,2.5,0.12
+id_contrato,cliente,cnae,setor_ngfs,pais,uf,rating,pd_12m,lgd,ead,prazo_anos,provisao,estagio
+C0001,Construtora Serra Azul S.A.,41,,Brasil,RS,BB,0.01234,0.45,46.563,3,0.316,1
+C0002,Agropecuária Aurora S.A.,01,,Brasil,MS,BB,0.013248,0.45,85.002,3,0.718,1
+C0003,Cimentos Paulista S.A.,23,,Brasil,PE,A,0.001349,0.35,140.17,4,0.101,1
+C0004,Autopeças Paulista S.A.,29,,Brasil,RJ,AA,0.000486,0.45,111.798,4,0.034,1
+C0005,Papel e Celulose Pampa S.A.,17,,Brasil,RJ,BB,0.012839,0.45,57.924,5,0.443,1
+C0006,Alimentos Atlântico S.A.,10,,Brasil,SP,BBB,0.003895,0.45,281.409,1,0.537,1
+C0007,Carbonífera Paulista S.A.,05,,Brasil,PE,BBB,0.00348,0.45,62.263,5,0.114,1
+C0008,Linhas Aéreas Aurora S.A.,51,,Brasil,RS,BB,0.012166,0.45,78.541,5,0.405,1
+C0009,Agropecuária Alfa S.A.,01,,Brasil,MT,BB,0.013198,0.45,132.441,2,1.207,1
+C0010,Alimentos do Cerrado S.A.,10,,Brasil,RJ,AA,0.000564,0.45,65.784,1,0.013,1
+C0011,Varejo Boa Vista S.A.,47,,Brasil,MG,B,0.036045,0.35,27.893,1,0.446,2
+C0012,Transportes do Cerrado S.A.,49,,Brasil,PR,BBB,0.003998,0.45,120.626,4,0.268,1
+C0013,Siderúrgica Atlântico S.A.,24,,Brasil,RJ,B,0.035283,0.45,43.699,3,0.795,2
+C0014,Refinaria Santa Clara S.A.,19,,Brasil,SP,BBB,0.004353,0.45,274.411,5,0.682,1
+C0015,Construtora Alfa S.A.,41,,Brasil,PR,AA,0.000531,0.45,39.241,2.5,0.008,1
+C0016,Autopeças Paulista S.A.,29,,Brasil,SP,BBB,0.00425,0.45,87.801,4,0.232,1
+C0017,Logística Paulista S.A.,52,,Brasil,SP,BB,0.011598,0.45,92.931,2.5,0.741,1
+C0018,Empreendimentos Atlântico S.A.,68,,Brasil,SP,B,0.032287,0.45,115.476,4,2.54,2
+C0019,Energia Horizonte S.A.,35,,Brasil,SP,B,0.033604,0.45,37.348,1,0.788,2
+C0020,Navegação Litoral S.A.,50,,Brasil,PR,B,0.040302,0.45,50.099,3,1.149,2
+C0021,Alimentos Nova Era S.A.,10,,Brasil,SP,BBB,0.004398,0.45,68.994,5,0.218,1
+C0022,Varejo Central S.A.,47,,Brasil,SP,BB,0.011221,0.45,38.679,1,0.249,1
+C0023,Logística do Cerrado S.A.,52,,Brasil,MG,B,0.034141,0.45,388.664,3,8.922,2
+C0024,Petróleo Vale Verde S.A.,06,,Brasil,MG,AA,0.000489,0.45,184.799,1,0.063,1
+C0025,Transportes Litoral S.A.,49,,Estados Unidos,SP,BB,0.013736,0.45,32.417,2,0.222,1
+C0026,Energia Central S.A.,35,,Brasil,MG,B,0.032116,0.45,25.564,5,0.46,2
+C0027,Agropecuária Central S.A.,01,,Brasil,MT,B,0.031493,0.45,14.032,3,0.22,2
+C0028,Agropecuária Ipê S.A.,01,,Brasil,MT,BBB,0.003902,0.45,87.892,2.5,0.132,1
+C0029,Siderúrgica Aurora S.A.,24,,Brasil,SP,BB,0.013415,0.35,179.051,1,0.906,1
+C0030,Alimentos Atlântico S.A.,10,,Brasil,SP,BBB,0.004561,0.45,84.933,5,0.204,1
+C0031,Linhas Aéreas Horizonte S.A.,51,,Brasil,MG,BB,0.013136,0.45,100.439,4,0.851,1
+C0032,Agropecuária Aurora S.A.,01,,Brasil,MT,A,0.001437,0.45,89.478,2.5,0.08,1
+C0033,Varejo Serra Azul S.A.,47,,Brasil,SP,B,0.035373,0.45,18.359,4,0.37,2
+C0034,Empreendimentos do Cerrado S.A.,68,,Brasil,SP,BBB,0.003549,0.45,41.262,3,0.094,1
+C0035,Refinaria Serra Azul S.A.,19,,Brasil,SP,A,0.001354,0.35,274.881,4,0.133,1
+C0036,Linhas Aéreas Litoral S.A.,51,,Brasil,SP,CCC,0.1373,0.45,80.452,1,5.853,2
+C0037,Mineração Aurora S.A.,07,,Brasil,SP,B,0.035899,0.35,42.079,3,0.697,2
+C0038,Hospital Boa Vista S.A.,86,,Brasil,SP,BB,0.010576,0.45,62.825,5,0.339,1
+C0039,Agropecuária Boa Vista S.A.,01,,Brasil,RS,BBB,0.004273,0.45,59.33,2,0.153,1
+C0040,Cimentos Boa Vista S.A.,23,,Brasil,MG,A,0.001453,0.45,30.391,2.5,0.022,1
+C0041,Petróleo Aurora S.A.,06,,Argentina,SP,BB,0.011923,0.45,307.888,3,2.612,1
+C0042,Construtora Central S.A.,41,,Brasil,SP,BB,0.013628,0.45,15.62,5,0.082,1
+C0043,Transportes Aurora S.A.,49,,Brasil,PE,A,0.001511,0.45,48.384,2.5,0.05,1
+C0044,Distribuidora Ipê S.A.,46,,Brasil,SP,BBB,0.004144,0.45,90.106,1,0.258,1
+C0045,Petróleo Paulista S.A.,06,,Brasil,SP,A,0.001482,0.45,275.066,5,0.261,1
+C0046,Alimentos Litoral S.A.,10,,Brasil,MG,BBB,0.004541,0.45,232.474,4,0.646,1
+C0047,Distribuidora Santa Clara S.A.,46,,Brasil,RJ,BBB,0.004494,0.45,27.047,2.5,0.087,1
+C0048,Varejo Ipê S.A.,47,,Brasil,SP,BBB,0.00401,0.45,102.38,4,0.22,1
+C0049,Empreendimentos Santa Clara S.A.,68,,Brasil,SP,A,0.001632,0.45,110.415,5,0.105,1
+C0050,Petróleo do Cerrado S.A.,06,,Brasil,PR,BBB,0.003918,0.35,133.401,2,0.147,1
+C0051,Sistemas Alfa S.A.,62,,Brasil,SP,AA,0.000524,0.45,56.828,4,0.012,1
+C0052,Construtora do Cerrado S.A.,41,,Brasil,PR,B,0.033704,0.35,92.63,3,1.163,2
+C0053,Empreendimentos Alfa S.A.,68,,Brasil,RJ,B,0.036744,0.35,20.359,2.5,0.235,2
+C0054,Transportes Alfa S.A.,49,,Brasil,SP,CCC,0.104364,0.45,19.047,5,1.263,2
+C0055,Varejo do Cerrado S.A.,47,,Brasil,MG,BBB,0.00454,0.45,30.574,2.5,0.052,1
+C0056,Transportes Santa Clara S.A.,49,,Brasil,SP,B,0.031784,0.35,24.697,5,0.408,2
+C0057,Siderúrgica Boa Vista S.A.,24,,Brasil,MG,BB,0.010755,0.35,134.491,2.5,0.432,1
+C0058,Distribuidora Paulista S.A.,46,,Brasil,SP,BBB,0.004437,0.35,21.334,3,0.043,1
+C0059,Varejo Central S.A.,47,,Brasil,SP,BBB,0.003858,0.45,49.556,5,0.114,1
+C0060,Agropecuária Horizonte S.A.,01,,Brasil,MT,CCC,0.104513,0.45,28.099,4,2.025,2
+C0061,Distribuidora Central S.A.,46,,Brasil,MG,A,0.001587,0.45,136.518,2,0.105,1
+C0062,Agropecuária Aurora S.A.,01,,Brasil,RS,BB,0.013017,0.45,28.099,4,0.167,1
+C0063,Energia Vale Verde S.A.,35,,Chile,MG,BBB,0.004564,0.45,10.685,5,0.033,1
+C0064,Alimentos do Cerrado S.A.,10,,Brasil,SP,AA,0.000458,0.45,41.717,2,0.009,1
+C0065,Agropecuária Aurora S.A.,01,,Brasil,MT,BB,0.010661,0.45,23.738,5,0.181,1
+C0066,Transportes Ipê S.A.,49,,Estados Unidos,RJ,BBB,0.004262,0.45,49.144,2.5,0.115,1
+C0067,Construtora do Cerrado S.A.,41,,Brasil,SP,BB,0.012074,0.45,38.675,3,0.201,1
+C0068,Mineração Central S.A.,07,,Chile,PR,BB,0.010913,0.45,43.045,1,0.276,1
+C0069,Transportes Serra Azul S.A.,49,,Chile,SP,BB,0.011255,0.45,18.937,3,0.139,1
+C0070,Refinaria Pampa S.A.,19,,Brasil,MG,BBB,0.003762,0.35,73.503,5,0.15,1
+C0071,Florestal Vale Verde S.A.,02,,Brasil,GO,B,0.038815,0.45,107.111,2.5,2.207,2
+C0072,Autopeças Pampa S.A.,29,,Brasil,MG,A,0.001295,0.35,126.505,3,0.046,1
+C0073,Química do Cerrado S.A.,20,,Brasil,SP,B,0.035179,0.45,46.795,4,0.96,2
+C0074,Distribuidora Ipê S.A.,46,,Brasil,MG,B,0.034024,0.45,32.214,4,0.757,2
+C0075,Petróleo Ipê S.A.,06,,Brasil,PE,A,0.001538,0.45,153.541,3,0.133,1
+C0076,Petróleo Santa Clara S.A.,06,,Brasil,SP,A,0.001583,0.45,19.399,2.5,0.014,1
+C0077,Linhas Aéreas do Cerrado S.A.,51,,Brasil,PR,BBB,0.003924,0.45,19.023,3,0.045,1
+C0078,Agropecuária Alfa S.A.,01,,Brasil,PR,BBB,0.004634,0.35,90.551,2,0.119,1
+C0079,Navegação Santa Clara S.A.,50,,Brasil,RJ,B,0.033906,0.45,37.984,3,0.76,2
+C0080,Mineração Litoral S.A.,07,,Brasil,MG,BB,0.011552,0.45,15.014,2.5,0.075,1
+C0081,Energia Vale Verde S.A.,35,,Brasil,MG,A,0.001483,0.35,52.221,1,0.043,1
+C0082,Química Pampa S.A.,20,,Brasil,SP,BBB,0.00451,0.35,25.827,3,0.046,1
+C0083,Papel e Celulose Atlântico S.A.,17,,Chile,RJ,BBB,0.004133,0.35,51.402,4,0.091,1
+C0084,Florestal Paulista S.A.,02,,Brasil,MT,BBB,0.004487,0.45,29.87,1,0.075,1
+C0085,Mineração Nova Era S.A.,07,,Brasil,PR,BBB,0.004005,0.35,100.895,3,0.126,1
+C0086,Florestal Boa Vista S.A.,02,,Brasil,RS,BB,0.01168,0.45,95.668,3,0.768,1
+C0087,Alimentos Pampa S.A.,10,,Brasil,RJ,A,0.001422,0.45,87.909,4,0.068,1
+C0088,Hospital Horizonte S.A.,86,,Brasil,PR,BBB,0.003642,0.35,61.577,3,0.111,1
+C0089,Agropecuária Boa Vista S.A.,01,,Brasil,GO,BB,0.010593,0.35,26.112,2,0.104,1
+C0090,Energia Serra Azul S.A.,35,,Brasil,RJ,A,0.00171,0.35,673.565,2,0.603,1
+C0091,Energia Paulista S.A.,35,,Brasil,MG,BB,0.011627,0.35,380.013,2.5,2.119,1
+C0092,Sistemas Alfa S.A.,62,,Brasil,RJ,BB,0.012048,0.45,20.572,3,0.142,1
+C0093,Agropecuária Paulista S.A.,01,,Brasil,GO,CCC,0.120918,0.45,99.836,2,5.031,2
+C0094,Hospital Aurora S.A.,86,,Brasil,SP,BB,0.010602,0.45,81.313,5,0.44,1
+C0095,Construtora Ipê S.A.,41,,Brasil,MG,BB,0.013161,0.35,42.407,5,0.274,1
+C0096,Distribuidora Ipê S.A.,46,,Brasil,RJ,BB,0.013066,0.35,33.95,1,0.216,1
+C0097,Autopeças do Cerrado S.A.,29,,Brasil,SP,BBB,0.0035,0.45,17.404,3,0.023,1
+C0098,Siderúrgica Pampa S.A.,24,,Brasil,SP,BBB,0.003712,0.45,61.41,2,0.154,1
+C0099,Linhas Aéreas Santa Clara S.A.,51,,Brasil,SP,BB,0.012515,0.45,107.135,3,0.92,1
+C0100,Construtora Nova Era S.A.,41,,Brasil,RJ,BBB,0.003719,0.45,85.803,5,0.181,1
+C0101,Autopeças Nova Era S.A.,29,,Brasil,RJ,CCC,0.124558,0.35,15.172,2,3.717,3
+C0102,Cimentos Pampa S.A.,23,,Brasil,SP,B,0.036679,0.45,17.554,3,0.387,2
+C0103,Transportes Aurora S.A.,49,,Brasil,SP,BBB,0.003716,0.35,35.494,5,0.062,1
+C0104,Agropecuária Ipê S.A.,01,,Brasil,GO,BBB,0.004625,0.45,44.47,4,0.117,1
+C0105,Sistemas Atlântico S.A.,62,,Brasil,RJ,A,0.001301,0.45,10.951,1,0.008,1
+C0106,Construtora Pampa S.A.,41,,Brasil,SP,CCC,0.114611,0.45,68.431,2,21.556,3
+C0107,Distribuidora Ipê S.A.,46,,Brasil,RJ,AA,0.000445,0.45,28.326,2.5,0.007,1
+C0108,Logística Horizonte S.A.,52,,Brasil,RJ,BB,0.011545,0.45,37.066,1,0.244,1
+C0109,Refinaria Aurora S.A.,19,,Brasil,SP,AA,0.000499,0.45,71.015,2,0.019,1
+C0110,Energia Horizonte S.A.,35,,Argentina,SP,BBB,0.003849,0.35,41.017,4,0.045,1
+C0111,Transportes Boa Vista S.A.,49,,Brasil,SP,BB,0.011269,0.45,131.77,5,0.806,1
+C0112,Varejo Atlântico S.A.,47,,Brasil,PE,A,0.00151,0.45,33.152,4,0.024,1
+C0113,Hospital Aurora S.A.,86,,Argentina,SP,BBB,0.004229,0.45,70.359,5,0.151,1
+C0114,Construtora Litoral S.A.,41,,Brasil,PR,BBB,0.004505,0.35,23.667,1,0.059,1
+C0115,Alimentos Serra Azul S.A.,10,,Brasil,SP,A,0.001715,0.45,8.228,4,0.008,1
+C0116,Agropecuária Atlântico S.A.,01,,Brasil,RS,B,0.038559,0.45,74.996,5,1.908,2
+C0117,Energia Aurora S.A.,35,,Brasil,RJ,BB,0.010585,0.45,53.401,5,0.219,1
+C0118,Energia Paulista S.A.,35,,Brasil,PR,BBB,0.004193,0.45,269.69,2.5,0.71,1
+C0119,Empreendimentos Paulista S.A.,68,,Brasil,RJ,B,0.037824,0.45,308.291,2.5,6.024,2
+C0120,Petróleo Santa Clara S.A.,06,,Brasil,SP,BB,0.010915,0.45,14.323,3,0.061,1
+C0121,Autopeças Aurora S.A.,29,,Brasil,PR,A,0.001533,0.45,16.414,1,0.014,1
+C0122,Mineração Central S.A.,07,,Argentina,RJ,A,0.001432,0.45,38.637,5,0.021,1
+C0123,Energia do Cerrado S.A.,35,,Brasil,SP,BBB,0.004405,0.45,69.85,2,0.129,1
+C0124,Cimentos Atlântico S.A.,23,,Brasil,SP,B,0.036299,0.45,29.127,2.5,0.618,2
+C0125,Alimentos Ipê S.A.,10,,Brasil,SP,A,0.001341,0.45,453.95,1,0.301,1
+C0126,Alimentos Vale Verde S.A.,10,,Brasil,RJ,B,0.040319,0.35,89.236,5,1.594,2
+C0127,Construtora Nova Era S.A.,41,,Brasil,SP,A,0.001586,0.45,118.961,3,0.075,1
+C0128,Varejo do Cerrado S.A.,47,,Brasil,PR,BBB,0.004135,0.45,55.757,4,0.139,1
+C0129,Agropecuária Horizonte S.A.,01,,Brasil,PR,BB,0.011458,0.45,71.204,3,0.53,1
+C0130,Distribuidora Atlântico S.A.,46,,Brasil,SP,BBB,0.003847,0.45,205.371,4,0.288,1
+C0131,Logística Aurora S.A.,52,,Brasil,RJ,A,0.001538,0.45,50.988,4,0.043,1
+C0132,Logística Boa Vista S.A.,52,,Brasil,SP,BB,0.012824,0.45,97.2,3,0.802,1
+C0133,Agropecuária Boa Vista S.A.,01,,Brasil,MT,B,0.037097,0.35,23.291,5,0.327,2
+C0134,Siderúrgica Santa Clara S.A.,24,,Brasil,RS,A,0.001665,0.45,63.169,5,0.045,1
+C0135,Florestal Alfa S.A.,02,,Brasil,PR,CCC,0.109752,0.45,14.904,1,1.091,2
+C0136,Papel e Celulose Serra Azul S.A.,17,,Brasil,SP,BB,0.011674,0.35,91.168,3,0.561,1
+C0137,Siderúrgica Horizonte S.A.,24,,Brasil,SP,BBB,0.00376,0.45,54.973,3,0.099,1
+C0138,Distribuidora Aurora S.A.,46,,Brasil,SP,BBB,0.003658,0.45,51.301,2,0.091,1
+C0139,Empreendimentos Litoral S.A.,68,,Brasil,PR,CCC,0.118003,0.45,27.511,5,8.666,3
+C0140,Varejo Pampa S.A.,47,,Argentina,MG,BBB,0.004211,0.45,34.449,5,0.054,1
+C0141,Varejo Paulista S.A.,47,,Brasil,RJ,BBB,0.004577,0.35,82.141,1,0.138,1
+C0142,Transportes Serra Azul S.A.,49,,Brasil,PR,BBB,0.004301,0.45,81.058,5,0.151,1
+C0143,Varejo Horizonte S.A.,47,,Brasil,MG,BB,0.013446,0.45,62.841,5,0.351,1
+C0144,Cimentos Central S.A.,23,,Brasil,PR,BB,0.010604,0.35,4.58,2,0.015,1
+C0145,Alimentos Boa Vista S.A.,10,,Brasil,MG,BB,0.011762,0.45,183.199,2,1.394,1
+C0146,Alimentos Alfa S.A.,10,,Brasil,SP,BBB,0.003902,0.45,121.19,4,0.266,1
+C0147,Química do Cerrado S.A.,20,,Brasil,SP,BBB,0.004245,0.35,55.169,4,0.128,1
+C0148,Construtora Horizonte S.A.,41,,Brasil,SP,BBB,0.00378,0.45,90.826,3,0.207,1
+C0149,Florestal Ipê S.A.,02,,Brasil,PR,A,0.001552,0.45,80.628,1,0.046,1
+C0150,Mineração Atlântico S.A.,07,,Brasil,SP,BBB,0.004246,0.45,34.221,1,0.071,1
+C0151,Construtora Vale Verde S.A.,41,,Brasil,SP,AA,0.000545,0.45,10.308,5,0.003,1
+C0152,Mineração Vale Verde S.A.,07,,Brasil,RJ,AA,0.000511,0.45,46.844,2.5,0.015,1
+C0153,Refinaria Alfa S.A.,19,,Brasil,SP,BBB,0.003944,0.45,88.527,2.5,0.132,1
+C0154,Transportes Boa Vista S.A.,49,,Brasil,MG,A,0.001336,0.45,86.897,1,0.074,1
+C0155,Alimentos Paulista S.A.,10,,Brasil,SP,BB,0.010345,0.45,34.453,1,0.14,1
+C0156,Construtora do Cerrado S.A.,41,,Brasil,SP,A,0.001596,0.45,51.087,4,0.042,1
+C0157,Petróleo Horizonte S.A.,06,,Brasil,RJ,BB,0.010558,0.45,24.326,5,0.143,1
+C0158,Logística Central S.A.,52,,Brasil,MG,A,0.001502,0.45,35.08,2,0.029,1
+C0159,Construtora Serra Azul S.A.,41,,Brasil,SP,AA,0.000515,0.45,78.236,1,0.017,1
+C0160,Hospital Ipê S.A.,86,,Brasil,SP,BBB,0.003593,0.45,57.628,2.5,0.12,1
