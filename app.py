@@ -13,7 +13,7 @@ import streamlit as st
 
 from climacred.article import build_article
 from climacred.creditrisk import CRParams, run_crplus
-from climacred.figures import fig_capital
+from climacred.figures import fig_capital, fig_cdf_tail, fig_dpd_heatmap, fig_pd_rating, fig_sector_impact
 from climacred.config import ANCHORS, INPUT_LAYOUT, MAP_ROWS, SECTOR_NAME, YEARS
 from climacred.engine import Params, run
 from climacred.io import DATA, find_local_ngfs, load_dpd, load_portfolio
@@ -334,6 +334,8 @@ with tabs[1]:
                             f"{100 * cpar.conf:.2f}%)".replace(".", ","), xaxis_title="Perda (R$ mi)", yaxis_title="Probabilidade acumulada",
                       yaxis=dict(range=[0.9, 1.0005]), height=380, margin=dict(l=10, r=10, t=50, b=10), separators=",.",
                       legend=dict(orientation="h", y=-0.25))
+    st.markdown("**Cauda da distribuição acumulada, base e todos os cenários**")
+    st.pyplot(fig_cdf_tail(crp, R, mono=False), width="stretch")
     with st.expander("Distribuição acumulada (interativa)"):
         st.plotly_chart(fig, width="stretch")
     with st.expander("Fatores setoriais da carteira de base (μ, σ, α, β)"):
@@ -350,6 +352,15 @@ with tabs[2]:
     st.subheader(f"{s.index[0]} concentra a maior perda incremental")
     st.dataframe(s.style.format(f3).background_gradient(cmap="Reds", subset=[c for c in s.columns if c != "EAD"]),
                  width="stretch")
+    st.caption("Perda esperada incremental por setor e cenário (R$ mi).")
+    g1, g2 = st.columns(2)
+    with g1:
+        st.markdown("**Impacto líquido (Δ PE + Δ K·EAD) por setor, R$ mi**")
+        st.pyplot(fig_sector_impact(out, mono=False), width="stretch")
+        st.caption("Valores negativos, em itálico, são benefícios.")
+    with g2:
+        st.markdown(f"**ΔPD do CLIMACRED (p.p.), {fb}, no ano de avaliação**")
+        st.pyplot(fig_dpd_heatmap(out, data, mono=False), width="stretch")
 
 with tabs[3]:
     st.subheader(f"Contratos mais afetados em {W['sc']['nome']}, {YEARS[W['yi']]}")
@@ -358,6 +369,8 @@ with tabs[3]:
                                                         "pd_base", "pd_estressada", "delta_pe", "delta_capital"]]
     st.dataframe(top.style.format({"ead": f3, "delta_pd_pp": f3, "pd_base": pc, "pd_estressada": pc, "delta_pe": f3,
                                    "delta_capital": f3}), hide_index=True, width="stretch")
+    st.markdown("**PD média por rating, base × cenários (escala logarítmica)**")
+    st.pyplot(fig_pd_rating(out, mono=False), width="stretch")
 
 with tabs[4]:
     st.write("O CLIMACRED entrega a ΔPD da firma representativa do setor. A soma direta trata igual um rating A e um rating B; "

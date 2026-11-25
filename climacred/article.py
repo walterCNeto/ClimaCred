@@ -25,7 +25,7 @@ from reportlab.platypus import (Image, KeepTogether, PageBreak, Paragraph, Simpl
                                 TableStyle)
 
 from .config import SECTOR_NAME, YEARS  # noqa: E402
-from .figures import fig_capital
+from .figures import fig_capital, fig_cdf_tail, fig_dpd_heatmap, fig_pd_rating, fig_sector_impact
 from .report import (MODEL_LABEL, cap_model, capital_compare, f2, f3, has_pr, impact, model_base, model_delta, money, unit_for,
                      worst, worst_model)
 from .report import pc2 as pc  # noqa: E402
@@ -582,6 +582,16 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     w_first = 16.0 - 1.85 * len(cols)
     A(KeepTogether([_caption(st, "<b>Tabela 3.</b> Perda esperada incremental por setor e cenário (R$), dez maiores."),
                     _table(sec_rows, ["Setor"] + cols, [w_first] + [1.85] * len(cols), st)]))
+    A(Paragraph(
+        "A Figura 4 soma perda esperada e capital ASRF por setor, o que mostra onde o impacto líquido se concentra em cada cenário e "
+        "quais setores têm benefício (valores negativos, em itálico). A Figura 5 traz a ΔPD do CLIMACRED que origina esse impacto, "
+        f"para os setores de maior exposição, em {p.fallback_country} e no ano de avaliação de cada cenário.", st["body"]))
+    A(KeepTogether([_fig_to_image(fig_sector_impact(out), 15.0),
+                    _caption(st, "<b>Figura 4.</b> Impacto líquido (Δ PE + Δ K·EAD) por setor e cenário, em R$ milhões, nos doze setores "
+                                 "de maior impacto absoluto. Valores negativos, em itálico, são benefícios; o traço indica ausência de choque.")]))
+    A(KeepTogether([_fig_to_image(fig_dpd_heatmap(out, data), 15.0),
+                    _caption(st, f"<b>Figura 5.</b> ΔPD do CLIMACRED (p.p.) por setor e cenário para {p.fallback_country}, no ano de "
+                                 "avaliação, nos quinze setores de maior EAD da carteira.")]))
 
     # método
     a_, d_ = ("other", "ev") if p.mode == "dz" else ("ev", "other")
@@ -598,6 +608,12 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
     A(KeepTogether([_caption(st, f"<b>Tabela 5.</b> Contratos mais afetados em {W['sc']['nome']}, {YEARS[W['yi']]} (R$)."),
                     _table(top_rows, ["Contrato", "Setor", "Rating", "EAD", "PD base", "PD estress.", "Δ PE", "Δ capital"],
                            [1.6, 5.0, 1.2, 1.7, 1.6, 1.7, 1.5, 1.7], st, align_right_from=3)]))
+    A(Paragraph(
+        "A Figura 6 mostra a PD média por rating na base e em cada cenário. Em escala logarítmica, o deslocamento Δz aparece como um "
+        "afastamento maior nos bons ratings, preservando a ordenação de risco da carteira.", st["body"]))
+    A(KeepTogether([_fig_to_image(fig_pd_rating(out), 14.5),
+                    _caption(st, "<b>Figura 6.</b> PD média ponderada por EAD em cada rating, na base e em cada cenário (escala "
+                                 "logarítmica; exclui estágio 3).")]))
 
     if crp:
         cb = crp["base"]
@@ -608,7 +624,7 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
             f"Na carteira de base, o CreditRisk+ resulta em CEA = {money(cb['pe'])} + {money(cb['pi'])} = {money(cb['cea'])}. "
             f"A Tabela 6 mostra o capital em cada cenário. O maior aumento ocorre em {wid['sc']['nome']}, com CEA<sub>stress</sub> = "
             f"{money(xw['cea'])}, acréscimo de {money(xw['cea'] - cb['cea'])}, dos quais {money(xw['pe'] - cb['pe'])} de perda "
-            f"esperada e {money(xw['pi'] - cb['pi'])} de perda inesperada. A Figura 4 compara as duas distribuições de perda.",
+            f"esperada e {money(xw['pi'] - cb['pi'])} de perda inesperada. A Figura 7 compara as duas distribuições de perda, e a Figura 8 mostra a cauda da distribuição acumulada em todos os cenários.",
             st["body"]))
         crow = [["Base", "–", _mb(cb["pe"]), _mb(cb["pi"]), _mb(cb["cea"]), "–"]]
         crow += [[r["sc"]["nome"], str(YEARS[r["yi"]]), _mb(crp["cen"][r["sc"]["id"]]["pe"]), _mb(crp["cen"][r["sc"]["id"]]["pi"]),
@@ -616,11 +632,15 @@ def build_article(out: dict, data: dict, cart_src: str, author: str = "", instit
         A(KeepTogether([_caption(st, f"<b>Tabela 6.</b> CEA = PE + PI pelo CreditRisk+ na base e em cada cenário (confiança de {pc(cpar.conf)})."),
                         _table(crow, ["Cenário", "Ano", "PE", "PI", "CEA", "Δ CEA"], [6.0, 1.2, 2.2, 2.2, 2.2, 2.2], st, align_right_from=1)]))
         A(KeepTogether([_fig_to_image(fig_capital(crp, wid["sc"]["id"], f"{wid['sc']['nome']} ({YEARS[wid['yi']]})"), 14.5),
-                        _caption(st, f"<b>Figura 4.</b> Distribuição de perdas da carteira pelo CreditRisk+, na base e em "
+                        _caption(st, f"<b>Figura 7.</b> Distribuição de perdas da carteira pelo CreditRisk+, na base e em "
                                      f"{wid['sc']['nome']}, na mesma escala. A perda esperada (PE) é a média da distribuição; a "
                                      f"perda inesperada (PI), ou capital econômico, vai da PE ao quantil de {pc(cpar.conf)}; o CEA "
                                      "é a soma das duas e coincide com o VaR. No painel de estresse, a curva tracejada e as linhas "
                                      "pontilhadas reproduzem a base, evidenciando o deslocamento e o alongamento da cauda.")]))
+        A(KeepTogether([_fig_to_image(fig_cdf_tail(crp, R), 14.5),
+                        _caption(st, f"<b>Figura 8.</b> Distribuição acumulada da perda pelo CreditRisk+ na região da cauda, na base e "
+                                     f"em cada cenário. O cruzamento de cada curva com a linha de {pc(cpar.conf)} dá o VaR, que coincide "
+                                     "com o CEA.")]))
 
     if crp0:
         A(Paragraph("5.2 Comparação dos modelos de capital", st["h2"]))

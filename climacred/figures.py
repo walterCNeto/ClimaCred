@@ -150,3 +150,149 @@ def fig_capital(crp: dict, scen_id: str, scen_name: str, mono: bool = True, figs
             linespacing=1.35, bbox=dict(boxstyle="square,pad=0.45", fc=c["box"], ec=c["boxedge"], lw=0.8), zorder=7)
     fig.tight_layout(h_pad=2.2)
     return fig
+
+
+# ---------------------------------------------------------------- figuras de resultados por setor, rating e cauda
+from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm  # noqa: E402
+
+from .config import SECTOR_NAME, YEARS  # noqa: E402
+
+_GREY_DIV = LinearSegmentedColormap.from_list("grey_div", [(0, "#d9d9d9"), (0.5, "#ffffff"), (0.75, "#9a9a9a"), (1, "#262626")])
+_COLOR_DIV = LinearSegmentedColormap.from_list("col_div", [(0, "#2b7a78"), (0.5, "#ffffff"), (0.75, "#f08a84"), (1, "#8b0f0a")])
+
+
+def _short(sec):
+    return SECTOR_NAME.get(sec, "Sem mapeamento").split(" (")[0] if isinstance(sec, str) else "Sem mapeamento"
+
+
+def _heat(ax, M, rows, cols, fmt, cmap, cbar_label, fig):
+    vmax = max(np.nanmax(np.abs(M)), 1e-9)
+    vmin = min(np.nanmin(M), -1e-9)
+    norm = TwoSlopeNorm(vmin=min(vmin, -vmax * 0.15), vcenter=0.0, vmax=vmax)
+    Mm = np.ma.masked_where(np.isnan(M) | (np.abs(M) < 5e-4), M)
+    cm_ = cmap.with_extremes(bad="white")
+    im = ax.imshow(Mm, aspect="auto", cmap=cm_, norm=norm)
+    ax.add_patch(plt.Rectangle((-0.5, -0.5), M.shape[1], M.shape[0], fill=False, ec="0.75", lw=0.6))
+    ax.set_xticks(range(len(cols)), cols, fontsize=9)
+    ax.set_yticks(range(len(rows)), rows, fontsize=9)
+    ax.tick_params(length=0)
+    for s_ in ax.spines.values():
+        s_.set_visible(False)
+    for i in range(M.shape[0]):
+        for j in range(M.shape[1]):
+            v = M[i, j]
+            if np.isnan(v) or abs(v) < 5e-4:
+                ax.text(j, i, "–", ha="center", va="center", fontsize=8.5, color="0.45")
+                continue
+            dark = norm(v) > 0.78 or (norm(v) < 0.2 and cmap is _COLOR_DIV)
+            ax.text(j, i, fmt(v), ha="center", va="center", fontsize=8.5, color="white" if dark else "black",
+                    style="italic" if v < 0 else "normal")
+    ax.set_xticks(np.arange(-0.5, len(cols)), minor=True)
+    ax.set_yticks(np.arange(-0.5, len(rows)), minor=True)
+    ax.grid(which="minor", color="0.85", lw=0.8)
+    ax.tick_params(which="minor", length=0)
+    cb = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
+    cb.ax.tick_params(labelsize=8)
+    cb.set_label(cbar_label, fontsize=9)
+    cb.ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f2(v)))
+
+
+def fig_sector_impact(out: dict, top: int = 12, mono: bool = True):
+    """Impacto líquido (Δ PE + Δ capital ASRF) por setor e cenário, em R$ mi; valores negativos (benefício) em itálico."""
+    R = out["results"]
+    cols = [f"{r['sc']['curto']}\n{YEARS[r['yi']]}" for r in R]
+    per = [r["per"].assign(t=r["per"].delta_pe + r["per"].delta_capital, s=r["per"].setor.map(_short)) for r in R]
+    tab = np.array([[0.0] * len(R)])
+    import pandas as pd
+    piv = pd.concat([p.groupby("s")["t"].sum().rename(i) for i, p in enumerate(per)], axis=1).fillna(0.0)
+    piv = piv.loc[piv.abs().max(axis=1).sort_values(ascending=False).index[:top]]
+    piv = piv.loc[piv.max(axis=1).sort_values(ascending=False).index]
+    M = piv.to_numpy(float)
+    fig, ax = plt.subplots(figsize=(6.6, 0.36 * len(piv) + 1.3))
+    _heat(ax, M, list(piv.index), cols, lambda v: f2(v), _GREY_DIV if mono else _COLOR_DIV, "R$ mi", fig)
+    del tab
+    return fig
+
+
+def fig_dpd_heatmap(out: dict, data: dict, top: int = 15, mono: bool = True):
+    """ΔPD do CLIMACRED (p.p.) por setor e cenário no ano de avaliação, para o país padrão; setores de maior EAD."""
+    c = out["portfolio"]
+    pais = out["params"].fallback_country
+    dpd = data["dpd"]
+    secs = c.groupby("sec")["ead"].sum().sort_values(ascending=False).index[:top]
+    R = out["results"]
+    M = np.full((len(secs), len(R)), np.nan)
+    for j, r in enumerate(R):
+        sub = dpd[(dpd.cenario == r["sc"]["id"]) & (dpd.pais == pais) & (dpd.ano == YEARS[r["yi"]])].set_index("setor")["delta_pd_pp"]
+        for i, s in enumerate(secs):
+            if s in sub.index:
+                M[i, j] = float(sub.loc[s])
+    cols = [f"{r['sc']['curto']}\n{YEARS[r['yi']]}" for r in R]
+    fig, ax = plt.subplots(figsize=(6.6, 0.34 * len(secs) + 1.3))
+    _heat(ax, M, [_short(s) for s in secs], cols, lambda v: f2(v), _GREY_DIV if mono else _COLOR_DIV, "ΔPD (p.p.)", fig)
+    return fig
+
+
+_RATING_ORDER = ["AAA", "AA", "A", "BBB", "BB", "B", "CCC", "CC", "C", "D"]
+
+
+def fig_pd_rating(out: dict, mono: bool = True):
+    """PD média ponderada por EAD em cada rating, na base e em cada cenário (escala logarítmica)."""
+    import pandas as pd
+    R = out["results"]
+    styles = ["-", "--", "-.", ":", (0, (5, 1, 1, 1, 1, 1))]
+    marks = ["o", "s", "^", "D", "v"]
+    c = out["portfolio"]
+    c = c[~c["default"]] if "default" in c else c
+    order = [x for x in _RATING_ORDER if x in set(c["rating"])] + sorted(set(c["rating"]) - set(_RATING_ORDER))
+    base = c.groupby("rating").apply(lambda g: np.average(g.pdb, weights=g.ead), include_groups=False).reindex(order)
+    fig, ax = plt.subplots(figsize=(6.4, 3.1))
+    ax.plot(range(len(order)), 100 * base.to_numpy(), color="black", lw=2.2, marker="o", ms=4, label="Base")
+    for i, r in enumerate(R):
+        p = r["per"]
+        p = p[p.id_contrato.isin(c.id_contrato)]
+        s = p.groupby("rating").apply(lambda g: np.average(g.pd_estressada, weights=g.ead), include_groups=False).reindex(order)
+        ax.plot(range(len(order)), 100 * s.to_numpy(), color="0.35" if mono else None, ls=styles[i % 5], marker=marks[i % 5],
+                ms=3.2, lw=1.0, label=f"{r['sc']['curto']} ({YEARS[r['yi']]})")
+    ax.set_yscale("log")
+    ax.set_xticks(range(len(order)), order)
+    ax.set_ylabel("PD média ponderada (%)")
+    ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f2(v) if v < 1 else f"{v:.0f}"))
+    ax.grid(axis="y", which="both", color="0.88", lw=0.5)
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.legend(frameon=False, fontsize=8.5, ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.13))
+    return fig
+
+
+def fig_cdf_tail(crp: dict, results: list, conf: float | None = None, mono: bool = True):
+    """Função de distribuição acumulada da perda pelo CreditRisk+ na região da cauda, base e cenários."""
+    styles = ["--", "-.", ":", (0, (5, 1, 1, 1, 1, 1)), (0, (3, 1))]
+    L0 = crp["L0"]
+    conf = conf or crp["params"].conf
+    qmax = max([crp["base"]["quantil"]] + [crp["cen"][r["sc"]["id"]]["quantil"] for r in results]) * 1.15
+    dv, un, _ = unit_for([qmax])
+    fig, ax = plt.subplots(figsize=(6.4, 3.0))
+    items = [("Base", crp["base"], "-", 2.0, "black")] + [
+        (f"{r['sc']['curto']} ({YEARS[r['yi']]})", crp["cen"][r["sc"]["id"]], styles[i % 5], 1.1, "0.30" if mono else None)
+        for i, r in enumerate(results)]
+    ylo = 0.98
+    xlo = np.inf
+    for lab, d, ls, lw, col in items:
+        x = np.arange(len(d["dist"])) * L0 / dv
+        cdf = np.cumsum(d["dist"])
+        ax.plot(x, cdf, ls=ls, lw=lw, color=col, label=lab)
+        xlo = min(xlo, x[int(np.searchsorted(cdf, ylo))])
+    xlo *= 0.92
+    ax.axhline(conf, color="black", lw=0.7, ls=(0, (1, 2)))
+    ax.text(xlo + 0.01 * (qmax / dv - xlo), conf + 0.0004, f"nível de confiança q = {f2(100 * conf)}%", ha="left",
+            va="bottom", fontsize=8.5)
+    ax.set_xlim(xlo, qmax / dv)
+    ax.set_ylim(ylo, 1.0015)
+    ax.set_xlabel(f"Perda da carteira (R$ {un})")
+    ax.set_ylabel("Probabilidade acumulada")
+    ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f2(100 * v) + "%"))
+    ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f2(v)))
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.grid(color="0.9", lw=0.5)
+    ax.legend(frameon=False, fontsize=8.5, ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.17))
+    return fig
