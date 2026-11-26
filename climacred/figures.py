@@ -47,9 +47,18 @@ def _darrow(ax, x0, x1, y, c):
                 arrowprops=dict(arrowstyle="<|-|>", color=c["line"], lw=1.0, shrinkA=0, shrinkB=0, mutation_scale=9))
 
 
-def _bbox(fig, t):
+def _renderer(fig):
+    """Renderizador Agg da figura, qualquer que seja o backend ativo (no Streamlit Cloud o canvas pode ser o
+    FigureCanvasBase, que não tem get_renderer)."""
+    if not hasattr(fig.canvas, "get_renderer"):
+        from matplotlib.backends.backend_agg import FigureCanvasAgg
+        FigureCanvasAgg(fig)
     fig.canvas.draw()
-    return t.get_window_extent(fig.canvas.get_renderer())
+    return fig.canvas.get_renderer()
+
+
+def _bbox(fig, t):
+    return t.get_window_extent(_renderer(fig))
 
 
 def _fit_label(fig, ax, t, x0, x1):
